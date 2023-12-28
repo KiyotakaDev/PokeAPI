@@ -1,14 +1,16 @@
 import { create } from "zustand";
 
 const usePokemonStore = create((set, get) => ({
+  baseURL: "https://pokeapi.co/api/v2/",
   pokemons: [],
+  pokemonByID: [],
   offset: 0,
   incOffset: () => set((state) => ({ offset: state.offset + 30 })),
   fetchFirstPokemons: async () => {
-    const { offset, pokemons: currentPokemons } = get();
+    const { baseURL, offset, pokemons: currentPokemons } = get();
     try {
       const response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon?limit=30&offset=${offset}`
+        `${baseURL}pokemon?limit=30&offset=${offset}`
       );
       const data = await response.json();
 
@@ -40,6 +42,20 @@ const usePokemonStore = create((set, get) => ({
     } catch (error) {
       console.error("Fetching pokemons error: ", error);
     }
+  },
+  fetchPokemonByID: async (id) => {
+    const { baseURL, pokemonByID } = get();
+    const response = await fetch(`${baseURL}pokemon/${id}`);
+    const data = await response.json();
+
+    const pokemonData = {
+      id: data.id,
+      name: data.name,
+      sprite: data.sprites.other.showdown.front_default,
+      types: data.types.map((type) => type.type),
+    };
+
+    set({ pokemonByID: pokemonData });
   },
 }));
 
