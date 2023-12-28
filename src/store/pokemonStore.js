@@ -51,7 +51,7 @@ const usePokemonStore = create((set, get) => ({
     const pokemonData = {
       id: data.id,
       name: data.name,
-      sprite: data.sprites.other.home.front_default,
+      sprite: data.sprites.versions['generation-v']['black-white'].front_default,
       types: data.types.map((type) => type.type),
     };
 

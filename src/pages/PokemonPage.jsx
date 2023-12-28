@@ -6,7 +6,7 @@ import "ldrs/bouncy";
 const styles = {
   page: "bg-pokemon-purple-300 h-screen w-full text-white",
   text: "text-sm s:text-base ls:text-xl sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
-  img: "w-1/2",
+  img: "object-contain w-40 h-auto",
 };
 
 const Loader = () => {
