@@ -34,6 +34,10 @@ const PokeList = () => {
 
   useEffect(() => {
     return () => fetchFirstPokemons();
+  }, []);
+  
+  useEffect(() => {
+    return () => fetchFirstPokemons();
   }, [offset, fetchFirstPokemons]);
 
   useEffect(() => {
