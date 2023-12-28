@@ -1,11 +1,20 @@
 import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import usePokemonStore from "../store/pokemonStore";
+import "ldrs/bouncy";
 
 const styles = {
   page: "bg-pokemon-purple-300 h-screen w-full text-white",
   text: "text-sm s:text-base ls:text-xl sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
   img: "w-1/2",
+};
+
+const Loader = () => {
+  return (
+    <div className="h-screen w-full flex justify-center items-center">
+      <l-bouncy size="100" speed="1.75" color="white" />
+    </div>
+  );
 };
 
 const PokemonPage = () => {
@@ -50,7 +59,9 @@ const PokemonPage = () => {
             Back to home page
           </Link>
         </div>
-      ) : null}
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };
