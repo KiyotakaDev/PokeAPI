@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import usePokemonStore from "../store/pokemonStore";
+import { Link } from "react-router-dom";
 
 const styles = {
   container:
@@ -14,10 +15,13 @@ const styles = {
 
 const PokeCard = ({ pokemon }) => {
   return (
-    <div className={`card ${styles.pokemonCard}`}>
-      <div>
-        <img className={styles.pokemonImage} src={pokemon.sprite} alt={pokemon.name} loading="lazy" />
-      </div>
+    <div id={pokemon.id} className={`card ${styles.pokemonCard}`}>
+      <img
+        className={styles.pokemonImage}
+        src={pokemon.sprite}
+        alt={pokemon.name}
+        loading="lazy"
+      />
       <div className={styles.pokemonDetails}>
         <p>#{pokemon.id}</p>
         <h3>{pokemon.name}</h3>
@@ -30,12 +34,12 @@ const PokeCard = ({ pokemon }) => {
 const PokeList = () => {
   const { pokemons, fetchFirstPokemons, offset, incOffset } = usePokemonStore();
   const containerRef = useRef();
-  const [firstVisiblePokemonId, setFirstVisiblePokemonId] = useState(null)
+  const [firstVisiblePokemonId, setFirstVisiblePokemonId] = useState(null);
 
   useEffect(() => {
     return () => fetchFirstPokemons();
   }, []);
-  
+
   useEffect(() => {
     return () => fetchFirstPokemons();
   }, [offset, fetchFirstPokemons]);
@@ -48,14 +52,15 @@ const PokeList = () => {
     const firstCardObserver = new IntersectionObserver(
       ([entries]) => {
         if (entries.isIntersecting) {
-          setFirstVisiblePokemonId(entries.target)
+          setFirstVisiblePokemonId(entries.target);
         } else {
-          firstCardObserver.observe(entries.target.nextElementSibling)
-          setFirstVisiblePokemonId(entries.target)
+          firstCardObserver.observe(entries.target.nextElementSibling);
+          setFirstVisiblePokemonId(entries.target);
         }
-      }, { threshold: 0.6 }
-    )
-    firstCardObserver.observe(containerRef.current.firstElementChild)
+      },
+      { threshold: 0.6 }
+    );
+    firstCardObserver.observe(containerRef.current.firstElementChild);
 
     const lastCardObserver = new IntersectionObserver(
       ([entries]) => {
@@ -72,18 +77,21 @@ const PokeList = () => {
     return () => {
       firstCardObserver.disconnect();
       lastCardObserver.disconnect();
-    }
+    };
   }, [pokemons]);
 
   return (
     <>
       {firstVisiblePokemonId && (
-        console.log(firstVisiblePokemonId)
+        <Link to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}>
+          <img
+            src={firstVisiblePokemonId.firstChild.src}
+            alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
+          />
+        </Link>
       )}
-      <div
-        ref={containerRef}
-        className={styles.container}
-      >
+      {firstVisiblePokemonId && console.log(firstVisiblePokemonId.attributes.id)}
+      <div ref={containerRef} className={styles.container}>
         {pokemons
           ? pokemons.map((pokemon) => (
               <PokeCard key={pokemon.id} pokemon={pokemon} />
