@@ -82,15 +82,17 @@ const PokeList = () => {
 
   return (
     <>
-      {firstVisiblePokemonId && (
-        <Link to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}>
-          <img
-            className="mx-auto object-contain animate-less_bounce"
-            src={firstVisiblePokemonId.firstChild.src}
-            alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
-          />
-        </Link>
-      )}
+      <div className="w-full h-1/2 xl:w-1/2 xl:h-screen flex justify-center items-center">
+        {firstVisiblePokemonId && (
+          <Link to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}>
+            <img
+              className="object-cover max-w-full h-auto animate-less_bounce"
+              src={firstVisiblePokemonId.firstChild.src}
+              alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
+            />
+          </Link>
+        )}
+      </div>
       {/* {firstVisiblePokemonId && console.log(firstVisiblePokemonId.attributes.id)} */}
       <div ref={containerRef} className={styles.container}>
         {pokemons
