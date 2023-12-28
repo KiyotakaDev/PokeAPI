@@ -85,6 +85,7 @@ const PokeList = () => {
       {firstVisiblePokemonId && (
         <Link to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}>
           <img
+            className="mx-auto object-contain animate-less_bounce"
             src={firstVisiblePokemonId.firstChild.src}
             alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
           />
