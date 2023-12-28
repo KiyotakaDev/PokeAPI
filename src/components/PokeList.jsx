@@ -91,7 +91,7 @@ const PokeList = () => {
           />
         </Link>
       )}
-      {firstVisiblePokemonId && console.log(firstVisiblePokemonId.attributes.id)}
+      {/* {firstVisiblePokemonId && console.log(firstVisiblePokemonId.attributes.id)} */}
       <div ref={containerRef} className={styles.container}>
         {pokemons
           ? pokemons.map((pokemon) => (
