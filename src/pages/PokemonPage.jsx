@@ -28,13 +28,11 @@ const PokemonPage = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchPokemonByID(id)
-    }
+    fetchPokemonByID(id);
+  }, []);
 
-    return () => {
-      fetchData();
-    }
+  useEffect(() => {
+    return () => fetchPokemonByID(id);
   }, [fetchPokemonByID, id]);
 
   return (
