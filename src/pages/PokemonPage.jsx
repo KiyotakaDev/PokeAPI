@@ -4,9 +4,14 @@ import usePokemonStore from "../store/pokemonStore";
 import "ldrs/bouncy";
 
 const styles = {
-  page: "bg-pokemon-purple-300 h-screen w-full text-white",
-  text: "text-xs s:text-sm ls:text-base sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
+  page: "bg-pokemon-purple-300 h-screen w-full text-white text-xs s:text-sm ls:text-base sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
+  types:
+    "bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-center gap-y-4 ls:gap-y-2 gap-x-8 items-center px-2 ls:px-3 py-5 ls:py-6",
+  typeCard: "mx-2 px-3 py-1 rounded-md dark-text-shadow",
+  imgContainer: "flex justify-center items-center py-10",
   img: "object-contain w-16 s:w-24 ls:w-40 h-auto",
+  statContainer: "bg-gradient-to-br from-pokemon-purple-100 to-pokemon-purple-200 to-60% w-11/12 mx-auto p-4 ls:p-6 rounded-lg flex flex-col gap-y-2 shadow-2xl",
+  rightStat: "absolute w-1/2 left-1/2 top-0 border-2 h-full rounded-md bg-[#2a1233]",
 };
 
 const Loader = () => {
@@ -40,16 +45,18 @@ const PokemonPage = () => {
   }, [fetchPokemonByID, id]);
 
   return (
+    // Page
     <div className={styles.page}>
       {isValid ? (
-        <div className={`${styles.text} text-xs`}>
-          <div className="bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-center gap-y-4 ls:gap-y-2 gap-x-8 items-center px-2 ls:px-3 py-5 ls:py-6">
+        // General container
+        <>
+          <div className={styles.types}>
             <h2>{upp(pokemonByID.name)}</h2>
-            <div className="">
+            <div>
               {pokemonByID.types.map((type) => (
                 <span
                   key={type.name}
-                  className={`mx-2 px-3 py-1 rounded-md dark-text-shadow`}
+                  className={styles.typeCard}
                   style={{ backgroundColor: `var(--${type.name}-color)` }}
                 >
                   {type.name.toUpperCase()}
@@ -57,23 +64,27 @@ const PokemonPage = () => {
               ))}
             </div>
           </div>
-          <div className="flex justify-center items-center py-10">
+          <div className={styles.imgContainer}>
             <img
               className={`${styles.img}`}
               src={pokemonByID.sprite}
               alt={pokemonByID.name}
             />
           </div>
-          {/* Stats */}
-          <div className="bg-gradient-to-br from-pokemon-purple-100 to-pokemon-purple-200 to-60% w-11/12 mx-auto p-4 ls:p-6 rounded-lg flex flex-col gap-y-2 shadow-2xl">
+          {/* Stats container */}
+          <div className={styles.statContainer}>
             {pokemonByID.stats.map((stat) => (
               <div key={stat.name} className="w-full relative">
+                {/* Left container */}
                 <div className="w-1/2">{upp(stat.name)}</div>
+                {/* Right container */}
                 <div
-                  className={`absolute w-1/2 left-1/2 top-0 border-2 h-full rounded-md bg-[#2a1233]`}
+                  className={styles.rightStat}
                   style={{ borderColor: `var(--${stat.name}-color)` }}
                 >
+                  {/* Stat progress bar container */}
                   <div className="w-full h-full p-[2.5px] s:p-1 ls:p-1.5 rounded-md flex items-center">
+                    {/* Bar */}
                     <span
                       className={`h-full rounded-md`}
                       style={{
@@ -89,7 +100,7 @@ const PokemonPage = () => {
           <Link className="flex justify-center items-center pt-10" to="/">
             Back to home page
           </Link>
-        </div>
+        </>
       ) : (
         <Loader />
       )}
