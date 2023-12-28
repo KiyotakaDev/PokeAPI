@@ -47,6 +47,9 @@
 .text-shadow {
   text-shadow: 4px 3px 1px #79797b;
 }
+.dard-text-shadow {
+  text-shadow: 3px 2px 1px #404040;
+}
 
 /* Types */
 .fire {
