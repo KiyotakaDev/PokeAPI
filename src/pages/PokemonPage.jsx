@@ -28,7 +28,13 @@ const PokemonPage = () => {
   };
 
   useEffect(() => {
-    fetchPokemonByID(id);
+    const fetchData = async () => {
+      await fetchPokemonByID(id)
+    }
+
+    return () => {
+      fetchData();
+    }
   }, [fetchPokemonByID, id]);
 
   return (
