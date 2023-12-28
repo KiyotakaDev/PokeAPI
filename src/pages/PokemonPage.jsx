@@ -23,7 +23,7 @@ const PokemonPage = () => {
               <span key={type.name} className={`${type.name} p-2 m-4 rounded-lg`}>{type.name}</span>
             )): null}
           </div>
-          {console.log(pokemonByID)}
+          {/* {console.log(pokemonByID)} */}
         </div>
       ) : null}
       <Link to="/">Back to home page</Link>
