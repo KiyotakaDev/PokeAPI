@@ -5,8 +5,8 @@ import "ldrs/bouncy";
 
 const styles = {
   page: "bg-pokemon-purple-300 h-screen w-full text-white",
-  text: "text-sm s:text-base ls:text-xl sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
-  img: "object-contain w-40 h-auto",
+  text: "text-xs s:text-sm ls:text-base sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
+  img: "object-contain w-16 s:w-24 ls:w-40 h-auto",
 };
 
 const Loader = () => {
@@ -42,8 +42,8 @@ const PokemonPage = () => {
   return (
     <div className={styles.page}>
       {isValid ? (
-        <div className={`${styles.text}`}>
-          <div className="bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-center gap-y-2 gap-x-8 items-center px-2 s:px-4 py-6">
+        <div className={`${styles.text} text-xs`}>
+          <div className="bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-center gap-y-4 ls:gap-y-2 gap-x-8 items-center px-2 ls:px-3 py-5 ls:py-6">
             <h2>{upp(pokemonByID.name)}</h2>
             <div className="">
               {pokemonByID.types.map((type) => (
@@ -65,7 +65,7 @@ const PokemonPage = () => {
             />
           </div>
           {/* Stats */}
-          <div className="bg-gradient-to-br from-pokemon-purple-100 to-pokemon-purple-200 to-60% w-11/12 mx-auto p-6 rounded-lg flex flex-col gap-y-2 shadow-2xl">
+          <div className="bg-gradient-to-br from-pokemon-purple-100 to-pokemon-purple-200 to-60% w-11/12 mx-auto p-4 ls:p-6 rounded-lg flex flex-col gap-y-2 shadow-2xl">
             {pokemonByID.stats.map((stat) => (
               <div key={stat.name} className="w-full relative">
                 <div className="w-1/2">{upp(stat.name)}</div>
@@ -73,9 +73,9 @@ const PokemonPage = () => {
                   className={`absolute w-1/2 left-1/2 top-0 border-2 h-full rounded-md bg-[#2a1233]`}
                   style={{ borderColor: `var(--${stat.name}-color)` }}
                 >
-                  <div className="w-full h-full p-1.5 rounded-sm flex">
+                  <div className="w-full h-full p-[2.5px] s:p-1 ls:p-1.5 rounded-md flex items-center">
                     <span
-                      className={`h-full`}
+                      className={`h-full rounded-md`}
                       style={{
                         width: `${(stat.base / 255) * 100}%`,
                         backgroundColor: `var(--${stat.name}-color)`,
