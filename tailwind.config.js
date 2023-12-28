@@ -11,6 +11,7 @@ export default {
           "dark-grey": "#202020",
           "grey": "#363636",
           "orange": "#c59732",
+          "purple-50": "#6f2f6f",
           "purple-100": "#4b1e52",
           "purple-200": "#2d1537",
           "purple-300": "#1a0f24",
