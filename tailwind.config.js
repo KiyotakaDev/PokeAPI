@@ -8,8 +8,6 @@ export default {
     extend: {
       colors: {
         pokemon: {
-          "bg-red": "#b81d0f",
-          "bg-black": "#110f12",
           "dark-grey": "#202020",
           "grey": "#363636",
           "orange": "#c59732"
