@@ -44,7 +44,7 @@ const usePokemonStore = create((set, get) => ({
     }
   },
   fetchPokemonByID: async (id) => {
-    const { baseURL, pokemonByID } = get();
+    const { baseURL } = get();
     const response = await fetch(`${baseURL}pokemon/${id}`);
     const data = await response.json();
 
