@@ -5,8 +5,9 @@ import "ldrs/bouncy";
 
 const styles = {
   page: "bg-pokemon-purple-300 h-screen w-full text-white text-xs s:text-sm ls:text-base sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
+  name: "text-lg ls:text-xl sm:text-3xl lg:text-4xl 2k:text-6xl 4k:text-7xl",
   types:
-    "bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-center xl:justify-evenly gap-y-4 ls:gap-y-2 gap-x-8 items-center px-2 ls:px-3 py-5 ls:py-6 xl:py-10 2k:py-16 2k:py-24",
+    "bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-center xl:justify-evenly gap-y-4 ls:gap-y-2 gap-x-8 items-center px-2 ls:px-3 py-5 ls:py-6 xl:py-10 2k:py-16 4k:py-24",
   typeCard: "mx-2 2k:mx-8 px-3 xl:px-5 py-1 xl:py-3 rounded-md dark-text-shadow",
   imgContainer: "flex justify-center items-center py-10",
   img: "object-contain w-16 s:w-24 ls:w-40 h-auto xl:w-60",
@@ -53,7 +54,7 @@ const PokemonPage = () => {
         // General container
         <>
           <div className={styles.types}>
-            <h2>{upp(pokemonByID.name)}</h2>
+            <h2 className={styles.name}>{upp(pokemonByID.name)}</h2>
             <div>
               {pokemonByID.types.map((type) => (
                 <span
