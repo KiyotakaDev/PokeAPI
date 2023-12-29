@@ -45,34 +45,38 @@ const usePokemonStore = create((set, get) => ({
   },
   fetchPokemonByID: async (id) => {
     const { baseURL } = get();
-    const response = await fetch(`${baseURL}pokemon/${id}`);
-    const data = await response.json();
-
-    const tansformStatName = (name) => {
-      if (name.startsWith("special-")) {
-        const afterSpecial = name.substring("special-".length);
-        const capitalizeAfterSpecial =
-          afterSpecial.charAt(0).toUpperCase() + afterSpecial.slice(1);
-        return `sp-${capitalizeAfterSpecial}`;
-      }
-      return name;
-    };
-
-    const modifiedStats = data.stats.map((stat) => ({
-      name: tansformStatName(stat.stat.name),
-      base: stat.base_stat,
-    }));
-
-    const pokemonData = {
-      id: data.id,
-      name: data.name,
-      sprite:
-        data.sprites.versions["generation-v"]["black-white"].animated.front_default,
-      stats: modifiedStats,
-      types: data.types.map((type) => type.type),
-    };
-
-    set({ pokemonByID: pokemonData });
+    try {
+      const response = await fetch(`${baseURL}pokemon/${id}`);
+      const data = await response.json();
+  
+      const tansformStatName = (name) => {
+        if (name.startsWith("special-")) {
+          const afterSpecial = name.substring("special-".length);
+          const capitalizeAfterSpecial =
+            afterSpecial.charAt(0).toUpperCase() + afterSpecial.slice(1);
+          return `sp-${capitalizeAfterSpecial}`;
+        }
+        return name;
+      };
+  
+      const modifiedStats = data.stats.map((stat) => ({
+        name: tansformStatName(stat.stat.name),
+        base: stat.base_stat,
+      }));
+  
+      const pokemonData = {
+        id: data.id,
+        name: data.name,
+        sprite:
+          data.sprites.versions["generation-v"]["black-white"].animated.front_default,
+        stats: modifiedStats,
+        types: data.types.map((type) => type.type),
+      };
+  
+      set({ pokemonByID: pokemonData });
+    } catch (error) {
+      console.error("Error fetching pokemon by id: ", error)
+    }
   },
 }));
 
