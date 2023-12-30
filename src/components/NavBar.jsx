@@ -12,12 +12,12 @@ const NavBar = () => {
 
   return (
     <div className="absolute flex justify-evenly items-center w-full py-5 px-8 gap-x-10 transform transition duration-500">
-      <div className="w-1/2">
-        <img className="h-auto w-[70%]" src="/pokeapi-logo.png" />
+      <div className="w-[30%]">
+        <img className="h-auto w-full" src="/pokeapi-logo.png" />
       </div>
 
       <form
-        className="w-1/2 flex justify-between items-center border-2 border-pokemon-purple-50 rounded-lg py-2 px-4 gap-x-6"
+        className="w-[70%] flex justify-between items-center border-2 border-pokemon-purple-50 rounded-lg py-2 px-4 gap-x-6"
         onSubmit={(e) => e.preventDefault()}
       >
         <input
