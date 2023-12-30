@@ -4,6 +4,8 @@ const usePokemonStore = create((set, get) => ({
   baseURL: "https://pokeapi.co/api/v2/",
   pokemons: [],
   pokemonByID: [],
+  searchTerm: "",
+  setSearchTerm: (term) => set({ searchTerm: term }),
   offset: 0,
   incOffset: () => set((state) => ({ offset: state.offset + 30 })),
   fetchFirstPokemons: async () => {
@@ -48,7 +50,7 @@ const usePokemonStore = create((set, get) => ({
     try {
       const response = await fetch(`${baseURL}pokemon/${id}`);
       const data = await response.json();
-  
+
       const tansformStatName = (name) => {
         if (name.startsWith("special-")) {
           const afterSpecial = name.substring("special-".length);
@@ -58,24 +60,36 @@ const usePokemonStore = create((set, get) => ({
         }
         return name;
       };
-  
+
       const modifiedStats = data.stats.map((stat) => ({
         name: tansformStatName(stat.stat.name),
         base: stat.base_stat,
       }));
-  
+
       const pokemonData = {
         id: data.id,
         name: data.name,
         sprite:
-          data.sprites.versions["generation-v"]["black-white"].animated.front_default,
+          data.sprites.versions["generation-v"]["black-white"].animated
+            .front_default,
         stats: modifiedStats,
         types: data.types.map((type) => type.type),
       };
-  
+
       set({ pokemonByID: pokemonData });
     } catch (error) {
-      console.error("Error fetching pokemon by id: ", error)
+      console.error("Error fetching pokemon by id: ", error);
+    }
+  },
+  filterPokemons: () => {
+    const { allPokemons, searchTerm } = get();
+    try {
+      const filteredPokemons = allPokemons.filter((pokemon) =>
+        pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      return filteredPokemons;
+    } catch (error) {
+      console.error("Search error: ", error);
     }
   },
 }));
