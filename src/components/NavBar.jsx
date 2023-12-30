@@ -13,7 +13,7 @@ const NavBar = () => {
   return (
     <div className="absolute flex justify-evenly items-center w-full py-5 px-8 transform transition duration-500">
       <div className="w-1/2">
-        <img className="h-auto w-1/2" src="/pokeapi-logo.png" />
+        <img className="h-auto w-full" src="/pokeapi-logo.png" />
       </div>
 
       <form
@@ -25,7 +25,7 @@ const NavBar = () => {
           placeholder="Search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full bg-transparent outline-none"
+          className="w-full bg-transparent outline-none text-xs s:text-sm ls:text-base sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl"
         />
         <button
           className="hover:text-pokemon-purple-50 transition-colors duration-200"
