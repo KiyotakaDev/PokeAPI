@@ -82,9 +82,9 @@ const usePokemonStore = create((set, get) => ({
     }
   },
   filterPokemons: () => {
-    const { allPokemons, searchTerm } = get();
+    const { pokemons, searchTerm } = get();
     try {
-      const filteredPokemons = allPokemons.filter((pokemon) =>
+      const filteredPokemons = pokemons.filter((pokemon) =>
         pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       return filteredPokemons;
