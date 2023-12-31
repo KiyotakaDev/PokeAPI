@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import usePokemonStore from "../store/pokemonStore";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
@@ -19,9 +19,11 @@ const styles = {
 
 const Loader = () => {
   return (
-    <div className="absolute h-full w-full flex flex-col justify-center items-center gap-y-10">
-      <span className="animate-bounce">Catching Pokemons </span>
-      <l-hourglass size="80" bg-opacity="0.1" speed="1.75" color="white" />
+    <div className="absolute h-full w-full flex justify-center items-center">
+      <div className="flex flex-col gap-y-10 justify-center items-center">
+        <span className="animate-bounce">Catching Pokemons </span>
+        <l-hourglass size="80" bg-opacity="0.1" speed="1.75" color="white" />
+      </div>
     </div>
   );
 };
@@ -100,35 +102,6 @@ const PokeList = () => {
     };
   }, [pokemons]);
 
-  const memonizedLink = useMemo(() => {
-    if (firstVisiblePokemonId) {
-      return (
-        <Link
-          className="flex justify-center items-center"
-          to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}
-        >
-          <img
-            className="object-cover w-[75%] h-auto animate-less_bounce"
-            src={firstVisiblePokemonId.firstChild.src}
-            alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
-          />
-        </Link>
-      );
-    }
-
-    return null;
-  }, [firstVisiblePokemonId, pokemons]);
-
-  const memonizedPokeCard = useMemo(
-    () =>
-      pokemons
-        ? pokemons.map((pokemon) => (
-            <PokeCard key={pokemon.id} pokemon={pokemon} />
-          ))
-        : null,
-    [pokemons]
-  );
-
   return (
     <div className={styles.pokeText}>
       {!isLoading ? (
@@ -136,11 +109,26 @@ const PokeList = () => {
           <div className="absolute h-1/2 w-full xl:h-screen xl:w-1/2 ">
             <NavBar />
             <div className="w-full h-full flex justify-center items-end xl:items-center">
-              {memonizedLink}
+              {firstVisiblePokemonId && (
+                <Link
+                  className="flex justify-center items-center"
+                  to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}
+                >
+                  <img
+                    className="object-cover w-[75%] h-auto animate-less_bounce"
+                    src={firstVisiblePokemonId.firstChild.src}
+                    alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
+                  />
+                </Link>
+              )}
             </div>
           </div>
           <div ref={containerRef} className={styles.container}>
-            {memonizedPokeCard}
+            {pokemons
+              ? pokemons.map((pokemon) => (
+                  <PokeCard key={pokemon.id} pokemon={pokemon} />
+                ))
+              : null}
           </div>
         </div>
       ) : (
