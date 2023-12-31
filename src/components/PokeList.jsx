@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import usePokemonStore from "../store/pokemonStore";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
@@ -102,6 +102,35 @@ const PokeList = () => {
     };
   }, [pokemons]);
 
+  const memonizedLink = useMemo(() => {
+    if (firstVisiblePokemonId) {
+      return (
+        <Link
+          className="flex justify-center items-center"
+          to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}
+        >
+          <img
+            className="object-cover w-[75%] h-auto animate-less_bounce"
+            src={firstVisiblePokemonId.firstChild.src}
+            alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
+          />
+        </Link>
+      );
+    }
+
+    return null;
+  }, [firstVisiblePokemonId, pokemons]);
+
+  const memonizedPokeCard = useMemo(
+    () =>
+      pokemons
+        ? pokemons.map((pokemon) => (
+            <PokeCard key={pokemon.id} pokemon={pokemon} />
+          ))
+        : null,
+    [pokemons]
+  );
+
   return (
     <div className={styles.pokeText}>
       {!isLoading ? (
@@ -109,26 +138,11 @@ const PokeList = () => {
           <div className="absolute h-1/2 w-full xl:h-screen xl:w-1/2 ">
             <NavBar />
             <div className="w-full h-full flex justify-center items-end xl:items-center">
-              {firstVisiblePokemonId && (
-                <Link
-                  className="flex justify-center items-center"
-                  to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}
-                >
-                  <img
-                    className="object-cover w-[75%] h-auto animate-less_bounce"
-                    src={firstVisiblePokemonId.firstChild.src}
-                    alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
-                  />
-                </Link>
-              )}
+              {memonizedLink}
             </div>
           </div>
           <div ref={containerRef} className={styles.container}>
-            {pokemons
-              ? pokemons.map((pokemon) => (
-                  <PokeCard key={pokemon.id} pokemon={pokemon} />
-                ))
-              : null}
+            {memonizedPokeCard}
           </div>
         </div>
       ) : (
