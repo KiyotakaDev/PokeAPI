@@ -4,6 +4,8 @@ const usePokemonStore = create((set, get) => ({
   baseURL: "https://pokeapi.co/api/v2/",
   pokemons: [],
   pokemonByID: [],
+  allPokemons: [],
+  isLoading: true,
   searchTerm: "",
   setSearchTerm: (term) => set({ searchTerm: term }),
   offset: 0,
@@ -81,10 +83,36 @@ const usePokemonStore = create((set, get) => ({
       console.error("Error fetching pokemon by id: ", error);
     }
   },
-  filterPokemons: () => {
-    const { pokemons, searchTerm } = get();
+  fetchAllPokemons: async () => {
+    const { baseURL } = get();
     try {
-      const filteredPokemons = pokemons.filter((pokemon) =>
+      const response = await fetch(`${baseURL}pokemon?limit=10000`);
+      const data = await response.json();
+
+      const baseData = await Promise.all(
+        data.results.map(async (pokemon) => {
+          const baseDataResponse = await fetch(pokemon.url);
+          const baseData = await baseDataResponse.json();
+
+          return {
+            id: baseData.id,
+            name: baseData.name,
+            sprite: baseData.sprites.other["official-artwork"].front_default,
+          };
+        })
+      );
+
+      set({ allPokemons: baseData });
+      set({ isLoading: false })
+    } catch (error) {
+      console.error("Fetching all pokemon error: ", error);
+      set({ isLoading: false })
+    }
+  },
+  filterPokemons: () => {
+    const { allPokemons, searchTerm } = get();
+    try {
+      const filteredPokemons = allPokemons.filter((pokemon) =>
         pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       return filteredPokemons;
