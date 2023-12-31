@@ -47,10 +47,11 @@ const PokeCard = ({ pokemon }) => {
 
 const PokeList = () => {
   const {
-    pokemons,
-    fetchFirstPokemons,
-    offset,
-    incOffset,
+    allPokemons,
+    // pokemons,
+    // fetchFirstPokemons,
+    // offset,
+    // incOffset,
     fetchAllPokemons,
     isLoading,
   } = usePokemonStore();
@@ -58,18 +59,18 @@ const PokeList = () => {
   const [firstVisiblePokemonId, setFirstVisiblePokemonId] = useState(null);
 
   useEffect(() => {
-    fetchFirstPokemons();
+    // fetchFirstPokemons();
     fetchAllPokemons();
   }, []);
 
-  useEffect(() => {
-    return () => fetchFirstPokemons();
-  }, [offset, fetchFirstPokemons]);
+  // useEffect(() => {
+  //   return () => fetchFirstPokemons();
+  // }, [offset, fetchFirstPokemons]);
 
   useEffect(() => {
     if (!containerRef.current) return;
-    const lastCard = containerRef.current.lastElementChild;
-    if (!lastCard) return;
+    // const lastCard = containerRef.current.lastElementChild;
+    // if (!lastCard) return;
 
     const firstCardObserver = new IntersectionObserver(
       ([entries]) => {
@@ -84,23 +85,23 @@ const PokeList = () => {
     );
     firstCardObserver.observe(containerRef.current.firstElementChild);
 
-    const lastCardObserver = new IntersectionObserver(
-      ([entries]) => {
-        if (entries.isIntersecting) {
-          incOffset();
-        }
-      },
-      { threshold: 0 }
-    );
-    if (lastCard) {
-      lastCardObserver.observe(lastCard);
-    }
+    // const lastCardObserver = new IntersectionObserver(
+    //   ([entries]) => {
+    //     if (entries.isIntersecting) {
+    //       incOffset();
+    //     }
+    //   },
+    //   { threshold: 0 }
+    // );
+    // if (lastCard) {
+    //   lastCardObserver.observe(lastCard);
+    // }
 
     return () => {
       firstCardObserver.disconnect();
-      lastCardObserver.disconnect();
+      // lastCardObserver.disconnect();
     };
-  }, [pokemons]);
+  }, [allPokemons]);
 
   const memonizedLink = useMemo(() => {
     if (firstVisiblePokemonId) {
@@ -119,16 +120,16 @@ const PokeList = () => {
     }
 
     return null;
-  }, [firstVisiblePokemonId, pokemons]);
+  }, [firstVisiblePokemonId, allPokemons]);
 
   const memonizedPokeCard = useMemo(
     () =>
-      pokemons
-        ? pokemons.map((pokemon) => (
+      allPokemons
+        ? allPokemons.map((pokemon) => (
             <PokeCard key={pokemon.id} pokemon={pokemon} />
           ))
         : null,
-    [pokemons]
+    [allPokemons]
   );
 
   return (
