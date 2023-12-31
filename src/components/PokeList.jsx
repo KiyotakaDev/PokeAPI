@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import usePokemonStore from "../store/pokemonStore";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
+import "ldrs/hourglass";
 
 const styles = {
   container:
@@ -14,6 +15,14 @@ const styles = {
     "absolute h-16 w-16 ls:h-20 ls:w-20 sm:h-32 sm:w-32 lg:h-40 lg:w-40 xl:h-28 xl:w-28 1k:h-36 1k:w-36 2k:h-48 2k:w-48 4k:h-72 4k:w-72 -top-3 1k:-top-6 4k:-top-10 -left-3 xl:-left-8 4k:-left-12 object-contain",
   pokemonDetails:
     "w-3/4 relative left-[22%] lg:left-[18%] flex justify-between pr-5 sm:pr-12 4k:pr-24",
+};
+
+const Loader = () => {
+  return (
+    <div className="absolute h-full w-full flex flex-col justify-center items-center gap-y-10">
+      <span className="animate-bounce">Catching Pokemons </span><l-hourglass size="100" bg-opacity="0.1" speed="1.75" color="white" />
+    </div>
+  );
 };
 
 const PokeCard = ({ pokemon }) => {
@@ -35,12 +44,20 @@ const PokeCard = ({ pokemon }) => {
 };
 
 const PokeList = () => {
-  const { pokemons, fetchFirstPokemons, offset, incOffset } = usePokemonStore();
+  const {
+    pokemons,
+    fetchFirstPokemons,
+    offset,
+    incOffset,
+    fetchAllPokemons,
+    isLoading,
+  } = usePokemonStore();
   const containerRef = useRef();
   const [firstVisiblePokemonId, setFirstVisiblePokemonId] = useState(null);
 
   useEffect(() => {
     fetchFirstPokemons();
+    fetchAllPokemons();
   }, []);
 
   useEffect(() => {
@@ -83,35 +100,54 @@ const PokeList = () => {
     };
   }, [pokemons]);
 
+  const memonizedLink = useMemo(() => {
+    if (firstVisiblePokemonId) {
+      return (
+        <Link
+          className="flex justify-center items-center"
+          to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}
+        >
+          <img
+            className="object-cover w-[75%] h-auto animate-less_bounce"
+            src={firstVisiblePokemonId.firstChild.src}
+            alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
+          />
+        </Link>
+      );
+    }
+
+    return null;
+  }, [firstVisiblePokemonId]);
+
+  const memonizedPokeCard = useMemo(
+    () =>
+      pokemons
+        ? pokemons.map((pokemon) => (
+            <PokeCard key={pokemon.id} pokemon={pokemon} />
+          ))
+        : null,
+    [pokemons]
+  );
+
   return (
-    <div
-      className={`relative h-screen w-full flex flex-col xl:flex-row ${styles.pokeText}`}
-    >
-      <div className="absolute h-1/2 w-full xl:h-screen xl:w-1/2 ">
-        <NavBar />
-        <div className="w-full h-full flex justify-center items-end xl:items-center">
-          {firstVisiblePokemonId && (
-            <Link
-              className="flex justify-center items-center"
-              to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}
-            >
-              <img
-                className="object-cover w-[75%] h-auto animate-less_bounce"
-                src={firstVisiblePokemonId.firstChild.src}
-                alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
-              />
-            </Link>
-          )}
+    <div className={styles.pokeText}>
+      {!isLoading ? (
+        <div
+          className={`relative h-screen w-full flex flex-col xl:flex-row`}
+        >
+          <div className="absolute h-1/2 w-full xl:h-screen xl:w-1/2 ">
+            <NavBar />
+            <div className="w-full h-full flex justify-center items-end xl:items-center">
+              {memonizedLink}
+            </div>
+          </div>
+          <div ref={containerRef} className={styles.container}>
+            {memonizedPokeCard}
+          </div>
         </div>
-      </div>
-      {/* {firstVisiblePokemonId && console.log(firstVisiblePokemonId.attributes.id)} */}
-      <div ref={containerRef} className={styles.container}>
-        {pokemons
-          ? pokemons.map((pokemon) => (
-              <PokeCard key={pokemon.id} pokemon={pokemon} />
-            ))
-          : null}
-      </div>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };
