@@ -20,7 +20,8 @@ const styles = {
 const Loader = () => {
   return (
     <div className="absolute h-full w-full flex flex-col justify-center items-center gap-y-10">
-      <span className="animate-bounce">Catching Pokemons </span><l-hourglass size="100" bg-opacity="0.1" speed="1.75" color="white" />
+      <span className="animate-bounce">Catching Pokemons </span>
+      <l-hourglass size="80" bg-opacity="0.1" speed="1.75" color="white" />
     </div>
   );
 };
@@ -38,7 +39,6 @@ const PokeCard = ({ pokemon }) => {
         <p>#{pokemon.id}</p>
         <h3>{pokemon.name}</h3>
       </div>
-      {/* {console.log(pokemon)} */}
     </div>
   );
 };
@@ -117,7 +117,7 @@ const PokeList = () => {
     }
 
     return null;
-  }, [firstVisiblePokemonId]);
+  }, [firstVisiblePokemonId, pokemons]);
 
   const memonizedPokeCard = useMemo(
     () =>
@@ -132,9 +132,7 @@ const PokeList = () => {
   return (
     <div className={styles.pokeText}>
       {!isLoading ? (
-        <div
-          className={`relative h-screen w-full flex flex-col xl:flex-row`}
-        >
+        <div className={`relative h-screen w-full flex flex-col xl:flex-row`}>
           <div className="absolute h-1/2 w-full xl:h-screen xl:w-1/2 ">
             <NavBar />
             <div className="w-full h-full flex justify-center items-end xl:items-center">
