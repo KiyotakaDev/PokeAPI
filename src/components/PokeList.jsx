@@ -14,7 +14,7 @@ const styles = {
   pokemonImage:
     "absolute h-16 w-16 ls:h-20 ls:w-20 sm:h-32 sm:w-32 lg:h-40 lg:w-40 xl:h-28 xl:w-28 1k:h-36 1k:w-36 2k:h-48 2k:w-48 4k:h-72 4k:w-72 -top-3 1k:-top-6 4k:-top-10 -left-3 xl:-left-8 4k:-left-12 object-contain",
   pokemonDetails:
-    "w-3/4 relative left-[22%] lg:left-[18%] flex justify-between pr-5 sm:pr-12 4k:pr-24",
+    "w-3/4 relative left-[22%] lg:left-[18%] flex justify-between pr-5 sm:pr-12 4k:pr-24 items-center gap-x-20",
 };
 
 const Loader = () => {
@@ -37,12 +37,19 @@ const Loader = () => {
 const PokeCard = ({ pokemon }) => {
   return (
     <div id={pokemon.id} className={`card ${styles.pokemonCard}`}>
-      <img
-        className={styles.pokemonImage}
-        src={pokemon.sprite}
-        alt={pokemon.name}
-        loading="lazy"
-      />
+      {pokemon.sprite == null ? (
+        <>
+          <img className={styles.pokemonImage} src="/ditto.png" alt="ditto not found" />
+          <p className="absolute bottom-0">404</p>
+        </>
+      ) : (
+        <img
+          className={styles.pokemonImage}
+          src={pokemon.sprite}
+          alt={pokemon.name}
+          loading="lazy"
+        />
+      )}
       <div className={styles.pokemonDetails}>
         <p>#{pokemon.id}</p>
         <h3>{pokemon.name}</h3>
@@ -81,22 +88,27 @@ const PokeList = () => {
   }, [allPokemons]);
 
   const memonizedLink = useMemo(() => {
-    if (firstVisiblePokemonId) {
-      return (
-        <Link
-          className="flex justify-center items-center"
-          to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}
-        >
-          <img
-            className="object-cover w-[75%] h-auto animate-less_bounce"
-            src={firstVisiblePokemonId.firstChild.src}
-            alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
-          />
-        </Link>
-      );
-    }
+    const check =
+      firstVisiblePokemonId &&
+      firstVisiblePokemonId.attributes &&
+      firstVisiblePokemonId.firstChild;
 
-    return null;
+    return (
+      <>
+        {check ? (
+          <Link
+            className="flex justify-center items-center"
+            to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}
+          >
+            <img
+              className="object-cover w-[75%] h-auto animate-less_bounce"
+              src={firstVisiblePokemonId.firstChild.src}
+              alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
+            />
+          </Link>
+        ) : null}
+      </>
+    );
   }, [firstVisiblePokemonId, allPokemons]);
 
   const memonizedPokeCard = useMemo(
@@ -108,6 +120,15 @@ const PokeList = () => {
         : null,
     [allPokemons]
   );
+
+  const fillerElements = new Array(10)
+    .fill(null)
+    .map((_, index) => (
+      <div
+        key={`filler-${index}`}
+        className="relative bg-transparent py-4 sm:py-7 lg:py-10 xl:py-8 2k:py-12 4k:py-16"
+      />
+    ));
 
   return (
     <div className={styles.pokeText}>
@@ -121,6 +142,7 @@ const PokeList = () => {
           </div>
           <div ref={containerRef} className={styles.container}>
             {memonizedPokeCard}
+            {fillerElements}
           </div>
         </div>
       ) : (
