@@ -11,7 +11,6 @@ const usePokemonStore = create((set, get) => ({
   setSearchTerm: (term) => set({ searchTerm: term }),
   fetchPokemonByID: async (id) => {
     const { baseURL } = get();
-
     try {
       const response = await fetch(`${baseURL}pokemon/${id}`);
       const data = await response.json();
@@ -53,7 +52,7 @@ const usePokemonStore = create((set, get) => ({
     try {
       // Tries getting data from cache
       const cache = await caches.open("pokemon-cache");
-      const cachedResponse = await cache.match(`${baseURL}pokemon?limit=10000`);
+      const cachedResponse = await cache.match(`${baseURL}pokemon?limit=1020`);
 
       if (cachedResponse) {
         const data = await cachedResponse.json();
@@ -61,7 +60,7 @@ const usePokemonStore = create((set, get) => ({
         set({ allPokemons: data, dataLoaded: true, isLoading: false });
       } else {
         // If !data in cache, fetch
-        const response = await fetch(`${baseURL}pokemon?limit=10000`);
+        const response = await fetch(`${baseURL}pokemon?limit=1020`);
         const data = await response.json();
 
         const base = await Promise.all(
