@@ -2,53 +2,16 @@ import { create } from "zustand";
 
 const usePokemonStore = create((set, get) => ({
   baseURL: "https://pokeapi.co/api/v2/",
-  // pokemons: [],
   pokemonByID: [],
   allPokemons: [],
+  filteredPokemonsArray: [],
   isLoading: true,
+  dataLoaded: false,
   searchTerm: "",
   setSearchTerm: (term) => set({ searchTerm: term }),
-  // offset: 0,
-  // incOffset: () => set((state) => ({ offset: state.offset + 30 })),
-  // fetchFirstPokemons: async () => {
-  //   const { baseURL, offset, pokemons: currentPokemons } = get();
-  //   try {
-  //     const response = await fetch(
-  //       `${baseURL}pokemon?limit=30&offset=${offset}`
-  //     );
-  //     const data = await response.json();
-
-  //     const pokemonDetails = await Promise.all(
-  //       data.results.map(async (pokemon) => {
-  //         const detailsResponse = await fetch(pokemon.url);
-  //         if (!detailsResponse.ok)
-  //           throw new Error(
-  //             `Error fetching pokemon details: ${detailsResponse.statusText}`
-  //           );
-  //         const detailsData = await detailsResponse.json();
-  //         return {
-  //           id: detailsData.id,
-  //           name: detailsData.name,
-  //           sprite: detailsData.sprites.other["official-artwork"].front_default,
-  //         };
-  //       })
-  //     );
-
-  //     // Filter pokemonDetails to avoid duplicates
-  //     const filteredPokemonDetails = pokemonDetails.filter(
-  //       (newPokemon) =>
-  //         !currentPokemons.some(
-  //           (existingPokemon) => existingPokemon.id === newPokemon.id
-  //         )
-  //     );
-
-  //     set({ pokemons: [...currentPokemons, ...filteredPokemonDetails] });
-  //   } catch (error) {
-  //     console.error("Fetching pokemons error: ", error);
-  //   }
-  // },
   fetchPokemonByID: async (id) => {
     const { baseURL } = get();
+
     try {
       const response = await fetch(`${baseURL}pokemon/${id}`);
       const data = await response.json();
@@ -84,38 +47,60 @@ const usePokemonStore = create((set, get) => ({
     }
   },
   fetchAllPokemons: async () => {
-    const { baseURL } = get();
+    const { baseURL, dataLoaded } = get();
+    if (dataLoaded) return;
+
     try {
-      const response = await fetch(`${baseURL}pokemon?limit=10000`);
-      const data = await response.json();
+      // Tries getting data from cache
+      const cache = await caches.open("pokemon-cache");
+      const cachedResponse = await cache.match(`${baseURL}pokemon?limit=10000`);
 
-      const baseData = await Promise.all(
-        data.results.map(async (pokemon) => {
-          const baseDataResponse = await fetch(pokemon.url);
-          const baseData = await baseDataResponse.json();
+      if (cachedResponse) {
+        const data = await cachedResponse.json();
 
-          return {
-            id: baseData.id,
-            name: baseData.name,
-            sprite: baseData.sprites.other["official-artwork"].front_default,
-          };
-        })
-      );
+        set({ allPokemons: data, dataLoaded: true, isLoading: false });
+      } else {
+        // If !data in cache, fetch
+        const response = await fetch(`${baseURL}pokemon?limit=10000`);
+        const data = await response.json();
 
-      set({ allPokemons: baseData });
-      set({ isLoading: false })
+        const base = await Promise.all(
+          data.results.map(async (pokemon) => {
+            const baseDataResponse = await fetch(pokemon.url);
+            const baseData = await baseDataResponse.json();
+
+            return {
+              id: baseData.id,
+              name: baseData.name,
+              sprite: baseData.sprites.other["official-artwork"].front_default,
+            };
+          })
+        );
+
+        // Save data in cache
+        await cache.put(
+          `${baseURL}pokemon?limit=10000`,
+          new Response(JSON.stringify(base))
+        );
+
+        set({ allPokemons: base, dataLoaded: true, isLoading: false });
+      }
     } catch (error) {
       console.error("Fetching all pokemon error: ", error);
-      set({ isLoading: false })
+      set({ isLoading: false });
     }
   },
   filterPokemons: () => {
     const { allPokemons, searchTerm } = get();
     try {
-      const filteredPokemons = allPokemons.filter((pokemon) =>
-        pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      return filteredPokemons;
+      if (searchTerm !== "") {
+        const filteredPokemons = allPokemons.filter((pokemon) =>
+          pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        set({ filteredPokemonsArray: filteredPokemons });
+      } else {
+        set({ filteredPokemonsArray: allPokemons })
+      }
     } catch (error) {
       console.error("Search error: ", error);
     }

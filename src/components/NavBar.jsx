@@ -1,24 +1,25 @@
 import React from "react";
 import usePokemonStore from "../store/pokemonStore";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
-  const { fetchBasePokemonByID, filterPokemons, searchTerm, setSearchTerm } =
-    usePokemonStore();
-
-  const handleSearch = () => {
-    const filteredPokemons = filterPokemons();
-    console.log("Filtered pokemons: ", filteredPokemons);
-  };
+  const { filterPokemons, searchTerm, setSearchTerm } = usePokemonStore();
 
   return (
     <div className="absolute flex justify-evenly items-center w-full py-5 px-8 gap-x-10 transform transition duration-500">
       <div className="w-[40%]">
-        <img className="h-auto w-full" src="/pokeapi-logo.png" />
+        <Link
+          to="/"
+          children={<img className="h-auto w-full" src="/pokeapi-logo.png" />}
+        />
       </div>
 
       <form
         className="w-[60%] flex justify-between items-center border-2 border-pokemon-purple-50 rounded-lg py-2 px-4 gap-x-2"
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={(e) => {
+          e.preventDefault();
+          filterPokemons();
+        }}
       >
         <input
           type="text"
@@ -29,7 +30,6 @@ const NavBar = () => {
         />
         <button
           className="hover:text-pokemon-purple-50 transition-colors duration-200"
-          onClick={handleSearch}
           children={
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import usePokemonStore from "../store/pokemonStore";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
-import "ldrs/hourglass";
+import { newtonsCradle } from "ldrs";
 
 const styles = {
   container:
@@ -18,11 +18,17 @@ const styles = {
 };
 
 const Loader = () => {
+  newtonsCradle.register();
+
   return (
     <div className="absolute h-full w-full flex justify-center items-center">
       <div className="flex flex-col gap-y-10 justify-center items-center">
-        <span className="animate-bounce">Catching Pokemons </span>
-        <l-hourglass size="80" bg-opacity="0.1" speed="1.75" color="white" />
+        <p className="animate-bounce">Catching Pokemons </p>
+        <l-newtons-cradle
+          size="120"
+          speed="1.4"
+          color="white"
+        ></l-newtons-cradle>
       </div>
     </div>
   );
@@ -46,31 +52,17 @@ const PokeCard = ({ pokemon }) => {
 };
 
 const PokeList = () => {
-  const {
-    allPokemons,
-    // pokemons,
-    // fetchFirstPokemons,
-    // offset,
-    // incOffset,
-    fetchAllPokemons,
-    isLoading,
-  } = usePokemonStore();
+  const { allPokemons, fetchAllPokemons, isLoading, filteredPokemonsArray } =
+    usePokemonStore();
   const containerRef = useRef();
   const [firstVisiblePokemonId, setFirstVisiblePokemonId] = useState(null);
 
   useEffect(() => {
-    // fetchFirstPokemons();
     fetchAllPokemons();
   }, []);
 
-  // useEffect(() => {
-  //   return () => fetchFirstPokemons();
-  // }, [offset, fetchFirstPokemons]);
-
   useEffect(() => {
     if (!containerRef.current) return;
-    // const lastCard = containerRef.current.lastElementChild;
-    // if (!lastCard) return;
 
     const firstCardObserver = new IntersectionObserver(
       ([entries]) => {
@@ -85,22 +77,7 @@ const PokeList = () => {
     );
     firstCardObserver.observe(containerRef.current.firstElementChild);
 
-    // const lastCardObserver = new IntersectionObserver(
-    //   ([entries]) => {
-    //     if (entries.isIntersecting) {
-    //       incOffset();
-    //     }
-    //   },
-    //   { threshold: 0 }
-    // );
-    // if (lastCard) {
-    //   lastCardObserver.observe(lastCard);
-    // }
-
-    return () => {
-      firstCardObserver.disconnect();
-      // lastCardObserver.disconnect();
-    };
+    return () => firstCardObserver.disconnect();
   }, [allPokemons]);
 
   const memonizedLink = useMemo(() => {
