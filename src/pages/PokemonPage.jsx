@@ -29,14 +29,12 @@ const Loader = () => {
 const PokemonPage = () => {
   const { pokemonByID, fetchPokemonByID, isLoading } = usePokemonStore();
   const { id } = useParams();
-  if (
-    !pokemonByID &&
-    !pokemonByID.name &&
-    !pokemonByID.types &&
-    !pokemonByID.sprite &&
-    !pokemonByID.stats
-  )
-    return;
+  const check =
+    pokemonByID &&
+    pokemonByID.name &&
+    pokemonByID.types &&
+    pokemonByID.sprite &&
+    pokemonByID.stats;
 
   const capitalizeFirstChar = (word) => {
     if (!word) return;
@@ -50,7 +48,7 @@ const PokemonPage = () => {
   return (
     // Page
     <div className={styles.page}>
-      {!isLoading ? (
+      {!isLoading && check ? (
         // General container
         <>
           <div className={styles.types}>
