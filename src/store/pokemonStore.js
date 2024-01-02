@@ -7,6 +7,8 @@ const usePokemonStore = create((set, get) => ({
   filteredPokemonsArray: [],
   isLoading: true,
   dataLoaded: false,
+  selectedCard: null,
+  setSelectedCard: (current) => set({ selectedCard: current }),
   searchTerm: "",
   setSearchTerm: (term) => set({ searchTerm: term }),
   fetchPokemonByID: async (id) => {
