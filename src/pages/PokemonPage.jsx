@@ -6,14 +6,12 @@ import "ldrs/bouncy";
 const styles = {
   page: "bg-pokemon-purple-300 relative h-screen w-full text-white text-xs s:text-sm ls:text-base sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
   name: "text-lg ls:text-xl sm:text-3xl lg:text-4xl 2k:text-6xl 4k:text-7xl",
-  types:
-    "bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-center xl:justify-evenly gap-y-4 ls:gap-y-2 gap-x-8 items-center px-2 ls:px-3 py-5 ls:py-6 xl:py-10 2k:py-16 4k:py-24",
   typeCard:
     "mx-2 2k:mx-8 px-3 xl:px-5 py-1 xl:py-3 rounded-md dark-text-shadow",
-  imgContainer: "flex justify-center items-center py-3",
+  imgContainer: "flex justify-center items-center pt-10",
   img: "object-contain w-[50%] h-auto animate-less_bounce",
   statContainer:
-    "bg-gradient-to-br from-pokemon-purple-100 to-pokemon-purple-200 to-60% w-11/12 mx-auto p-4 ls:p-6 1k:p-8 2k:p-14 4k:p-24 rounded-lg flex flex-col gap-y-2 xl:gap-y-8 shadow-2xl",
+    "bg-gradient-to-br from-pokemon-purple-100 to-pokemon-purple-200 to-60% border-b-2 border-white w-[98%] ls:w-11/12 mx-auto p-4 ls:p-6 1k:p-10 2k:p-14 4k:p-24 rounded-lg flex flex-col gap-y-2 xl:gap-y-8 shadow-2xl",
   rightStat:
     "absolute w-1/2 left-1/2 top-0 border-2 h-full rounded-md bg-[#2a1233]",
 };
@@ -35,7 +33,9 @@ const PokemonPage = () => {
     pokemonByID.name &&
     pokemonByID.types &&
     pokemonByID.sprite &&
-    pokemonByID.stats;
+    pokemonByID.stats &&
+    pokemonByID.height &&
+    pokemonByID.weight;
 
   useEffect(() => {
     fetchPokemonByID(id);
@@ -47,23 +47,34 @@ const PokemonPage = () => {
       {!isLoading && check ? (
         // General container
         <>
-          <div className={styles.types}>
-            <h2 className={styles.name}>
-              {capitalizeFirstChar(pokemonByID.name)}
-            </h2>
-            <div>
-              {pokemonByID.types.map((type) => (
-                <span
-                  key={type.name}
-                  className={styles.typeCard}
-                  style={{ background: `var(--${type.name}-color)` }}
-                >
-                  {type.name.toUpperCase()}
-                </span>
-              ))}
+          <div className="bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-between items-center pb-4 pt-2">
+            <div className="w-[15%] ls:w-[12%] sm:w-[10%] xl:w-[7%] 1k:w-[5%]">
+              <Link to="/">
+                <img
+                  className="h-auto w-full p-2 "
+                  src="/house.svg"
+                  alt="house-icon"
+                />
+              </Link>
+            </div>
+            <div className="w-[80%] flex flex-wrap justify-center items-center">
+              <h2 className={styles.name}>
+                {capitalizeFirstChar(pokemonByID.name)}
+              </h2>
+              <div>
+                {pokemonByID.types.map((type) => (
+                  <span
+                    key={type.name}
+                    className={styles.typeCard}
+                    style={{ background: `var(--${type.name}-color)` }}
+                  >
+                    {type.name.toUpperCase()}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-          <div className="xl:flex xl:container xl:px-20 4k:px-40 xl:mx-auto xl:h-3/4 flex-row-reverse justify-center items-center">
+          <div className="flex flex-col gap-y-4 xl:flex-row xl:pt-3 xl:pr-12 1k:pt-32 1k:pr-32">
             <div className={`${styles.imgContainer} xl:w-1/2`}>
               <img
                 className={`${styles.img}`}
@@ -96,19 +107,12 @@ const PokemonPage = () => {
                   </div>
                 </div>
               ))}
+              <div className="mt-10 bg-gradient-to-b from-pokemon-purple-50 to-pokemon-purple-300 to-60% border-b-2 flex flex-col justify-center items-center w-[98%] mx-auto rounded-md gap-y-2 py-3">
+                <p>Height: {pokemonByID.height}M</p>
+                <span className="border border-dashed border-white w-[90%]" />
+                <p>Weight: {pokemonByID.weight}KG</p>
+              </div>
             </div>
-          </div>
-
-          <div className="absolute h-[8%] w-full bg-gradient-to-b from-pokemon-purple-100 bottom-0">
-            <div className="h-full w-full flex justify-center items-center">
-              <Link to="/" className="transition-transform ease-in-out duration-300 hover:scale-105 active:scale-95">
-                Back to home page
-              </Link>
-            </div>
-          </div>
-
-          <div className="">
-
           </div>
         </>
       ) : (
