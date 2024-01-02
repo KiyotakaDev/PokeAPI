@@ -99,7 +99,7 @@ const PokemonPage = () => {
             </div>
           </div>
 
-          <div className="absolute h-[12%] w-full bg-gradient-to-b from-pokemon-purple-100 bottom-0">
+          <div className="absolute h-[8%] w-full bg-gradient-to-b from-pokemon-purple-100 bottom-0">
             <div className="h-full w-full flex justify-center items-center">
               <Link to="/" className="transition-transform ease-in-out duration-300 hover:scale-105 active:scale-95">
                 Back to home page
