@@ -36,10 +36,14 @@ const Loader = () => {
 
 const PokeCard = ({ pokemon }) => {
   return (
-    <div id={pokemon.id} className={`card ${styles.pokemonCard}`}>
+    <div id={pokemon.id} className={`card ${styles.pokemonCard} hover:scale-105 hover:bg-pokemon-purple-50`}>
       {pokemon.sprite == null ? (
         <>
-          <img className={styles.pokemonImage} src="/ditto.png" alt="ditto not found" />
+          <img
+            className={styles.pokemonImage}
+            src="/ditto.png"
+            alt="ditto not found"
+          />
           <p className="absolute bottom-0">404</p>
         </>
       ) : (
@@ -59,10 +63,14 @@ const PokeCard = ({ pokemon }) => {
 };
 
 const PokeList = () => {
-  const { allPokemons, fetchAllPokemons, isLoading, filteredPokemonsArray } =
-    usePokemonStore();
+  const {
+    allPokemons,
+    fetchAllPokemons,
+    isLoading,
+    filteredPokemonsArray,
+    searchTerm,
+  } = usePokemonStore();
   const containerRef = useRef();
-  const [firstVisiblePokemonId, setFirstVisiblePokemonId] = useState(null);
 
   useEffect(() => {
     fetchAllPokemons();
@@ -71,78 +79,42 @@ const PokeList = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const firstCardObserver = new IntersectionObserver(
-      ([entries]) => {
-        if (entries.isIntersecting) {
-          setFirstVisiblePokemonId(entries.target);
-        } else {
-          firstCardObserver.observe(entries.target.nextElementSibling);
-          setFirstVisiblePokemonId(entries.target);
-        }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("show", entry.isIntersecting)
+        })
       },
       { threshold: 0.6 }
     );
-    firstCardObserver.observe(containerRef.current.firstElementChild);
 
-    return () => firstCardObserver.disconnect();
-  }, [allPokemons]);
+    containerRef.current.childNodes.forEach((child) => {
+      observer.observe(child)
+    })
 
-  const memonizedLink = useMemo(() => {
-    const check =
-      firstVisiblePokemonId &&
-      firstVisiblePokemonId.attributes &&
-      firstVisiblePokemonId.firstChild;
+    return () => observer.disconnect();
+  }, [allPokemons, filteredPokemonsArray]);
 
-    return (
-      <>
-        {check ? (
-          <Link
-            className="flex justify-center items-center"
-            to={`pokemon/${firstVisiblePokemonId.attributes.id.value}`}
-          >
-            <img
-              className="object-cover w-[75%] h-auto animate-less_bounce"
-              src={firstVisiblePokemonId.firstChild.src}
-              alt={firstVisiblePokemonId.firstChild.attributes.alt.value}
-            />
-          </Link>
-        ) : null}
-      </>
-    );
-  }, [firstVisiblePokemonId, allPokemons]);
-
-  const memonizedPokeCard = useMemo(
-    () =>
-      allPokemons
-        ? allPokemons.map((pokemon) => (
-            <PokeCard key={pokemon.id} pokemon={pokemon} />
-          ))
-        : null,
-    [allPokemons]
-  );
-
-  const fillerElements = new Array(10)
-    .fill(null)
-    .map((_, index) => (
-      <div
-        key={`filler-${index}`}
-        className="relative bg-transparent py-4 sm:py-7 lg:py-10 xl:py-8 2k:py-12 4k:py-16"
-      />
-    ));
+  //  
 
   return (
     <div className={styles.pokeText}>
-      {!isLoading ? (
+      {!isLoading && allPokemons && filteredPokemonsArray ? (
         <div className={`relative h-screen w-full flex flex-col xl:flex-row`}>
           <div className="absolute h-1/2 w-full xl:h-screen xl:w-1/2 ">
             <NavBar />
             <div className="w-full h-full flex justify-center items-end xl:items-center">
-              {memonizedLink}
+              {/* {memonizedLink} */}
             </div>
           </div>
           <div ref={containerRef} className={styles.container}>
-            {memonizedPokeCard}
-            {fillerElements}
+            {searchTerm === ""
+              ? allPokemons.map((pokemon) => (
+                  <PokeCard key={pokemon.id} pokemon={pokemon} />
+                ))
+              : filteredPokemonsArray.map((pokemon) => (
+                  <PokeCard key={pokemon.id} pokemon={pokemon} />
+                ))}
           </div>
         </div>
       ) : (

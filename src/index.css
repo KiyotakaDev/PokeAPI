@@ -56,3 +56,13 @@
 .dark-text-shadow {
   text-shadow: 3px 2px 1px #404040;
 }
+
+.card {
+  transform: translateX(100px);
+  transition: 250ms;
+  opacity: 0;
+}
+.show {
+  transform: translateX(0);
+  opacity: 1;
+}

@@ -78,7 +78,7 @@ const usePokemonStore = create((set, get) => ({
 
         // Save data in cache
         await cache.put(
-          `${baseURL}pokemon?limit=10000`,
+          `${baseURL}pokemon?limit=1020`,
           new Response(JSON.stringify(base))
         );
 
