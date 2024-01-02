@@ -27,7 +27,7 @@ const Loader = () => {
 };
 
 const PokemonPage = () => {
-  const { pokemonByID, fetchPokemonByID, isLoading } = usePokemonStore();
+  const { pokemonByID, fetchPokemonByID, isLoading, capitalizeFirstChar } = usePokemonStore();
   const { id } = useParams();
   const check =
     pokemonByID &&
@@ -35,11 +35,6 @@ const PokemonPage = () => {
     pokemonByID.types &&
     pokemonByID.sprite &&
     pokemonByID.stats;
-
-  const capitalizeFirstChar = (word) => {
-    if (!word) return;
-    return word[0].toUpperCase() + word.substring(1);
-  };
 
   useEffect(() => {
     fetchPokemonByID(id);

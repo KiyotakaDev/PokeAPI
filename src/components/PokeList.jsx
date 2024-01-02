@@ -36,15 +36,10 @@ const Loader = () => {
 };
 
 const PokeCard = ({ pokemon }) => {
-  const { setSelectedCard } = usePokemonStore();
+  const { setSelectedCard, capitalizeFirstChar } = usePokemonStore();
   const cardRef = useRef(null);
   if (!cardRef) return;
-
-  const capitalizeFirstChar = (word) => {
-    if (!word) return;
-    return word[0].toUpperCase() + word.substring(1);
-  };
-
+  
   const handleClick = (ref) => {
     setSelectedCard(ref)
   }
