@@ -48,7 +48,7 @@ const PokemonPage = () => {
         // General container
         <>
           <div className="bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-between items-center pb-4 pt-2">
-            <div className="w-[15%] ls:w-[12%] sm:w-[10%] xl:w-[7%] 1k:w-[5%]">
+            <div className="w-[15%] ls:w-[12%] sm:w-[10%] xl:w-[7%] 1k:w-[5%] ml-3">
               <Link to="/">
                 <img
                   className="h-auto w-full p-2 "
@@ -74,7 +74,7 @@ const PokemonPage = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-y-4 xl:flex-row xl:pt-3 xl:pr-12 1k:pt-32 1k:pr-32">
+          <div className="absolute s:bottom-[15%] flex flex-col gap-y-4 xl:flex-row xl:pt-3 xl:pr-12 1k:pt-32 1k:pr-32">
             <div className={`${styles.imgContainer} xl:w-1/2`}>
               <img
                 className={`${styles.img}`}
@@ -107,7 +107,7 @@ const PokemonPage = () => {
                   </div>
                 </div>
               ))}
-              <div className="mt-10 bg-gradient-to-b from-pokemon-purple-50 to-pokemon-purple-300 to-60% border-b-2 flex flex-col justify-center items-center w-[98%] mx-auto rounded-md gap-y-2 py-3">
+              <div className="mt-2 ls:mt-10 bg-gradient-to-b from-pokemon-purple-50 to-pokemon-purple-300 to-60% border-b-2 flex flex-col justify-center items-center w-[98%] mx-auto rounded-md gap-y-2 py-3">
                 <p>Height: {pokemonByID.height}M</p>
                 <span className="border border-dashed border-white w-[90%]" />
                 <p>Weight: {pokemonByID.weight}KG</p>
