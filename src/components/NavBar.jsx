@@ -26,10 +26,10 @@ const NavBar = () => {
             setSearchTerm(e.target.value)
             filterPokemons()
           }}
-          className="w-[90%] bg-transparent outline-none text-xs ls:text-sm sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl"
+          className="w-[95%] xl:w-[90%] bg-transparent outline-none text-xs ls:text-sm sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl"
         />
         <button
-          className="hover:text-pokemon-purple-50 transition-colors duration-200 w-[10%]"
+          className="hover:text-pokemon-purple-50 transition-colors duration-200 w-[5%] xl:w-[10%]"
           children={
             <img className="h-auto w-full" src="/search.svg" alt="search" />
           }
