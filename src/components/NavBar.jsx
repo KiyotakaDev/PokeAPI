@@ -10,7 +10,7 @@ const NavBar = () => {
       <div className="w-[40%]">
         <Link
           to="/"
-          children={<img className="h-auto w-full" src="/pokeapi-logo.png" />}
+          children={<img className="h-auto w-full transition-transform ease-out duration-200 hover:scale-105 active:scale-90" src="/pokeapi-logo.png" />}
         />
       </div>
 

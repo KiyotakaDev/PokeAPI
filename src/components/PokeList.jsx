@@ -10,11 +10,11 @@ const styles = {
   pokemonCard:
     "relative bg-pokemon-purple-200 py-4 sm:py-7 lg:py-10 xl:py-8 2k:py-12 4k:py-16 rounded-br-full",
   pokeText:
-    "text-white text-shadow text-sm s:text-base ls:text-xl sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
+    "text-white text-shadow text-xs s:text-base ls:text-xl sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
   pokemonImage:
     "absolute h-16 w-16 ls:h-20 ls:w-20 sm:h-32 sm:w-32 lg:h-40 lg:w-40 xl:h-28 xl:w-28 1k:h-36 1k:w-36 2k:h-48 2k:w-48 4k:h-72 4k:w-72 -top-3 1k:-top-6 4k:-top-10 -left-3 xl:-left-8 4k:-left-12 object-contain",
   pokemonDetails:
-    "w-3/4 relative left-[22%] lg:left-[18%] flex justify-between pr-5 sm:pr-12 4k:pr-24 items-center gap-x-20",
+    "w-3/4 relative left-[22%] lg:left-[18%] flex justify-between pr-5 sm:pr-12 4k:pr-24 gap-x-20",
 };
 
 const Loader = () => {
@@ -125,8 +125,8 @@ const PokeList = () => {
       );
     } else {
       return (
-        <div className="absolute h-3/4 flex justify-center items-center animate-less_bounce">
-          <p>Please select one pokemon!</p>
+        <div className={`${styles.largePokeText} absolute h-3/4 flex justify-center items-center animate-less_bounce pointer-events-none text-center`}>
+          <p className="text-base s:text-lg sm:text-2xl xl:text-3xl 1k:text-4xl 2k:text-6xl 4k:text-8xl px-10">Please select one pokemon!</p>
         </div>
       )
     }
