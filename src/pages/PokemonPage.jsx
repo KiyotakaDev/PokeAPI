@@ -10,8 +10,8 @@ const styles = {
     "bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-center xl:justify-evenly gap-y-4 ls:gap-y-2 gap-x-8 items-center px-2 ls:px-3 py-5 ls:py-6 xl:py-10 2k:py-16 4k:py-24",
   typeCard:
     "mx-2 2k:mx-8 px-3 xl:px-5 py-1 xl:py-3 rounded-md dark-text-shadow",
-  imgContainer: "flex justify-center items-center py-10",
-  img: "object-contain w-16 s:w-24 ls:w-40 h-auto xl:w-60",
+  imgContainer: "flex justify-center items-center py-3",
+  img: "object-contain w-[50%] h-auto animate-less_bounce",
   statContainer:
     "bg-gradient-to-br from-pokemon-purple-100 to-pokemon-purple-200 to-60% w-11/12 mx-auto p-4 ls:p-6 1k:p-8 2k:p-14 4k:p-24 rounded-lg flex flex-col gap-y-2 xl:gap-y-8 shadow-2xl",
   rightStat:
