@@ -1,9 +1,10 @@
 import React from "react";
 import usePokemonStore from "../store/pokemonStore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const { filterPokemons, searchTerm, setSearchTerm } = usePokemonStore();
+  const navigate = useNavigate()
 
   return (
     <div className="absolute flex justify-evenly items-center w-full py-5 px-8 gap-x-10 transform transition duration-500">
@@ -24,6 +25,7 @@ const NavBar = () => {
           onChange={(e) => {
             setSearchTerm(e.target.value)
             filterPokemons()
+            navigate("/")
           }}
           className="w-full bg-transparent outline-none text-xs ls:text-sm sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl"
         />

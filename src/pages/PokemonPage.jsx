@@ -29,6 +29,7 @@ const Loader = () => {
 const PokemonPage = () => {
   const { pokemonByID, fetchPokemonByID, capitalizeFirstChar, isLoading } = usePokemonStore();
   const { id } = useParams();
+  if (!pokemonByID) return
 
   useEffect(() => {
     fetchPokemonByID(id);
