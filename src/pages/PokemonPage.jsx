@@ -27,27 +27,17 @@ const Loader = () => {
 };
 
 const PokemonPage = () => {
-  const { pokemonByID, fetchPokemonByID, capitalizeFirstChar } = usePokemonStore();
+  const { pokemonByID, fetchPokemonByID, capitalizeFirstChar, isLoading } = usePokemonStore();
   const { id } = useParams();
-  const isValid =
-    pokemonByID &&
-    pokemonByID.name &&
-    pokemonByID.types &&
-    pokemonByID.stats &&
-    pokemonByID.sprite;
 
   useEffect(() => {
     fetchPokemonByID(id);
-  }, []);
-
-  useEffect(() => {
-    return () => fetchPokemonByID(id);
   }, [fetchPokemonByID, id]);
 
   return (
     // Page
     <div className={styles.page}>
-      {isValid ? (
+      {!isLoading ? (
         // General container
         <>
           <div className={styles.types}>

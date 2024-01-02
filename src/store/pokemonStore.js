@@ -14,6 +14,7 @@ const usePokemonStore = create((set, get) => ({
   fetchPokemonByID: async (id) => {
     const { baseURL } = get();
     try {
+      set({ isLoading: true });
       const response = await fetch(`${baseURL}pokemon/${id}`);
       const data = await response.json();
 
@@ -35,14 +36,12 @@ const usePokemonStore = create((set, get) => ({
       const pokemonData = {
         id: data.id,
         name: data.name,
-        sprite:
-          data.sprites.versions["generation-v"]["black-white"].animated
-            .front_default,
+        sprite: data.sprites.other["official-artwork"].front_default,
         stats: modifiedStats,
         types: data.types.map((type) => type.type),
       };
 
-      set({ pokemonByID: pokemonData });
+      set({ pokemonByID: pokemonData, isLoading: false });
     } catch (error) {
       console.error("Error fetching pokemon by id: ", error);
     }
@@ -52,6 +51,7 @@ const usePokemonStore = create((set, get) => ({
     if (dataLoaded) return;
 
     try {
+      set({ isLoading: true })
       // Tries getting data from cache
       const cache = await caches.open("pokemon-cache");
       const cachedResponse = await cache.match(`${baseURL}pokemon?limit=1020`);
