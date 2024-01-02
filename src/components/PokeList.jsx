@@ -23,7 +23,7 @@ const Loader = () => {
   return (
     <div className="absolute h-full w-full flex justify-center items-center">
       <div className="flex flex-col gap-y-10 justify-center items-center">
-        <p className="animate-bounce">Catching Pokemons </p>
+        <p className="animate-bounce text-2xl xl:text-4xl 1k:text-5xl 2k:text-7xl 4k:text-9xl px-10 text-center">Catching Pokemons </p>
         <l-newtons-cradle
           size="120"
           speed="1.4"
