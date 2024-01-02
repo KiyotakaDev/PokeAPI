@@ -31,7 +31,7 @@ const NavBar = () => {
         <button
           className="hover:text-pokemon-purple-50 transition-colors duration-200 w-[10%]"
           children={
-            <img className="h-auto w-full" src="/search.svg" />
+            <img className="h-auto w-full" src="/search.svg" alt="search" />
           }
         />
       </div>
