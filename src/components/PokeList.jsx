@@ -101,7 +101,7 @@ const PokeList = () => {
           entry.target.classList.toggle("show", entry.isIntersecting);
         });
       },
-      { threshold: 0 }
+      { threshold: 0.5 }
     );
 
     containerRef.current.childNodes.forEach((child) => {
