@@ -50,7 +50,7 @@ const PokeCard = ({ pokemon }) => {
       ref={cardRef}
       onClick={() => handleClick(cardRef.current)}
       id={pokemon.id}
-      className={` ${styles.pokemonCard} hover:scale-[1.02] xl:hover:scale-105 hover:bg-pokemon-purple-50 active:scale-95`}
+      className={` ${styles.pokemonCard} hover:scale-[1.02] xl:hover:scale-105 hover:bg-pokemon-purple-50 active:scale-95 gap-x-5`}
     >
       {pokemon.sprite == null ? (
         <>
