@@ -4,7 +4,7 @@ import usePokemonStore from "../store/pokemonStore";
 import "ldrs/bouncy";
 
 const styles = {
-  page: "bg-pokemon-purple-300 h-screen w-full text-white text-xs s:text-sm ls:text-base sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
+  page: "bg-pokemon-purple-300 relative h-screen w-full text-white text-xs s:text-sm ls:text-base sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
   name: "text-lg ls:text-xl sm:text-3xl lg:text-4xl 2k:text-6xl 4k:text-7xl",
   types:
     "bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-center xl:justify-evenly gap-y-4 ls:gap-y-2 gap-x-8 items-center px-2 ls:px-3 py-5 ls:py-6 xl:py-10 2k:py-16 4k:py-24",
@@ -27,7 +27,8 @@ const Loader = () => {
 };
 
 const PokemonPage = () => {
-  const { pokemonByID, fetchPokemonByID, isLoading, capitalizeFirstChar } = usePokemonStore();
+  const { pokemonByID, fetchPokemonByID, isLoading, capitalizeFirstChar } =
+    usePokemonStore();
   const { id } = useParams();
   const check =
     pokemonByID &&
@@ -97,12 +98,14 @@ const PokemonPage = () => {
               ))}
             </div>
           </div>
-          <Link
-            className="flex justify-center items-center pt-10 xl:pt-0"
-            to="/"
-          >
-            Back to home page
-          </Link>
+
+          <div className="absolute h-[12%] w-full bg-gradient-to-b from-pokemon-purple-100 bottom-0">
+            <div className="h-full w-full flex justify-center items-center">
+              <Link to="/" className="transition-transform ease-in-out duration-300 hover:scale-105 active:scale-95">
+                Back to home page
+              </Link>
+            </div>
+          </div>
         </>
       ) : (
         <Loader />

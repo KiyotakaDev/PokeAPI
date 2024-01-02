@@ -25,7 +25,6 @@ const NavBar = () => {
           onChange={(e) => {
             setSearchTerm(e.target.value)
             filterPokemons()
-            navigate("/")
           }}
           className="w-full bg-transparent outline-none text-xs ls:text-sm sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl"
         />
