@@ -32,10 +32,10 @@ const PokemonPage = () => {
   const { id } = useParams();
   if (
     !pokemonByID &&
+    !pokemonByID.name &&
     !pokemonByID.types &&
     !pokemonByID.sprite &&
-    !pokemonByID.stats &&
-    !pokemonByID.name
+    !pokemonByID.stats 
   )
     return;
 
