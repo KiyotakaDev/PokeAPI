@@ -48,7 +48,7 @@ const PokemonPage = () => {
         // General container
         <>
           <div className="bg-gradient-to-b from-pokemon-purple-100 to-pokemon-purple-200 flex flex-wrap justify-between items-center pb-4 pt-2">
-            <div className="w-[15%] ls:w-[12%] sm:w-[10%] xl:w-[7%] 1k:w-[5%] ml-3">
+            <div className="w-[15%] ls:w-[12%] sm:w-[10%] xl:w-[5%] ml-3 2k:ml-20 4k:ml-42">
               <Link to="/">
                 <img
                   className="h-auto w-full p-2 "
@@ -74,7 +74,7 @@ const PokemonPage = () => {
               </div>
             </div>
           </div>
-          <div className="absolute s:bottom-[15%] flex flex-col gap-y-4 xl:flex-row xl:pt-3 xl:pr-12 1k:pt-32 1k:pr-32">
+          <div className="absolute s:bottom-[15%] w-full flex flex-col gap-y-4 xl:flex-row xl:pt-3 xl:pr-12 1k:pt-32 1k:pr-32">
             <div className={`${styles.imgContainer} xl:w-1/2`}>
               <img
                 className={`${styles.img}`}
