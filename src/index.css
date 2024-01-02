@@ -66,3 +66,9 @@
   transform: translateX(0);
   opacity: 1;
 }
+
+
+::selection {
+  background-color: #fb32b7;
+  color: #00FFC2;
+}
