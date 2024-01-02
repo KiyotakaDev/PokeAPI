@@ -35,8 +35,21 @@ const Loader = () => {
 };
 
 const PokeCard = ({ pokemon }) => {
+  const { setSelectedCard } = usePokemonStore();
+  const cardRef = useRef(null);
+  if (!cardRef) return;
+
+  const handleClick = (ref) => {
+    setSelectedCard(ref)
+  }
+
   return (
-    <div id={pokemon.id} className={`card ${styles.pokemonCard} hover:scale-105 hover:bg-pokemon-purple-50`}>
+    <div
+      ref={cardRef}
+      onClick={() => handleClick(cardRef.current)}
+      id={pokemon.id}
+      className={`card cursor-pointer ${styles.pokemonCard} hover:scale-[1.02] xl:hover:scale-105 hover:bg-pokemon-purple-50 active:scale-95`}
+    >
       {pokemon.sprite == null ? (
         <>
           <img
@@ -69,6 +82,7 @@ const PokeList = () => {
     isLoading,
     filteredPokemonsArray,
     searchTerm,
+    selectedCard,
   } = usePokemonStore();
   const containerRef = useRef();
 
@@ -82,20 +96,41 @@ const PokeList = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          entry.target.classList.toggle("show", entry.isIntersecting)
-        })
+          entry.target.classList.toggle("show", entry.isIntersecting);
+        });
       },
-      { threshold: 0.6 }
+      { threshold: 0 }
     );
 
     containerRef.current.childNodes.forEach((child) => {
-      observer.observe(child)
-    })
+      observer.observe(child);
+    });
 
     return () => observer.disconnect();
   }, [allPokemons, filteredPokemonsArray]);
 
-  //  
+  const memonizedLink = useMemo(() => {
+    if (selectedCard) {
+      return (
+        <Link
+          className="flex justify-center items-center"
+          to={`pokemon/${selectedCard.attributes.id.value}`}
+        >
+          <img
+            className="object-cover w-[75%] h-auto animate-less_bounce"
+            src={selectedCard.firstChild.src}
+            alt={selectedCard.firstChild.attributes.alt.value}
+          />
+        </Link>
+      );
+    } else {
+      return (
+        <div className="absolute h-3/4 flex justify-center items-center animate-less_bounce">
+          <p>Please select one pokemon!</p>
+        </div>
+      )
+    }
+  }, [selectedCard, allPokemons]);
 
   return (
     <div className={styles.pokeText}>
@@ -104,7 +139,7 @@ const PokeList = () => {
           <div className="absolute h-1/2 w-full xl:h-screen xl:w-1/2 ">
             <NavBar />
             <div className="w-full h-full flex justify-center items-end xl:items-center">
-              {/* {memonizedLink} */}
+              {memonizedLink}
             </div>
           </div>
           <div ref={containerRef} className={styles.container}>
