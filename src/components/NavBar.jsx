@@ -15,11 +15,7 @@ const NavBar = () => {
         />
       </div>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          e.target.reset()
-        }}
+      <div
         className="w-[60%] flex justify-between items-center border-2 border-pokemon-purple-50 rounded-lg py-2 px-4 gap-x-2"
       >
         <input
@@ -47,7 +43,7 @@ const NavBar = () => {
             </svg>
           }
         />
-      </form>
+      </div>
     </div>
   );
 };
