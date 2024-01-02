@@ -39,6 +39,8 @@ const usePokemonStore = create((set, get) => ({
         sprite: data.sprites.other["official-artwork"].front_default,
         stats: modifiedStats,
         types: data.types.map((type) => type.type),
+        height: (data.height / 10).toFixed(1),
+        weight: (data.weight / 10).toFixed(1),
       };
 
       set({ pokemonByID: pokemonData, isLoading: false });
@@ -51,7 +53,7 @@ const usePokemonStore = create((set, get) => ({
     if (dataLoaded) return;
 
     try {
-      set({ isLoading: true })
+      set({ isLoading: true });
       // Tries getting data from cache
       const cache = await caches.open("pokemon-cache");
       const cachedResponse = await cache.match(`${baseURL}pokemon?limit=1020`);
@@ -107,7 +109,7 @@ const usePokemonStore = create((set, get) => ({
     }
   },
   capitalizeFirstChar: (word) => {
-    if (!word) return
+    if (!word) return;
     return word[0].toUpperCase() + word.substring(1);
   },
 }));
