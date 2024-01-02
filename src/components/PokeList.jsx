@@ -35,7 +35,7 @@ const Loader = () => {
 };
 
 const PokeCard = ({ pokemon }) => {
-  const { setSelectedCard } = usePokemonStore();
+  const { setSelectedCard, capitalizeFirstChar } = usePokemonStore();
   const cardRef = useRef(null);
   if (!cardRef) return;
 
@@ -69,7 +69,7 @@ const PokeCard = ({ pokemon }) => {
       )}
       <div className={styles.pokemonDetails}>
         <p>#{pokemon.id}</p>
-        <h3>{pokemon.name}</h3>
+        <h3>{capitalizeFirstChar(pokemon.name)}</h3>
       </div>
     </div>
   );

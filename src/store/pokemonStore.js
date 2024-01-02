@@ -100,11 +100,14 @@ const usePokemonStore = create((set, get) => ({
         );
         set({ filteredPokemonsArray: filteredPokemons });
       } else {
-        set({ filteredPokemonsArray: allPokemons })
+        set({ filteredPokemonsArray: allPokemons });
       }
     } catch (error) {
       console.error("Search error: ", error);
     }
+  },
+  capitalizeFirstChar: (word) => {
+    return word[0].toUpperCase() + word.substring(1);
   },
 }));
 

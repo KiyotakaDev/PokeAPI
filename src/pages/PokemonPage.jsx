@@ -27,7 +27,7 @@ const Loader = () => {
 };
 
 const PokemonPage = () => {
-  const { pokemonByID, fetchPokemonByID } = usePokemonStore();
+  const { pokemonByID, fetchPokemonByID, capitalizeFirstChar } = usePokemonStore();
   const { id } = useParams();
   const isValid =
     pokemonByID &&
@@ -35,10 +35,6 @@ const PokemonPage = () => {
     pokemonByID.types &&
     pokemonByID.stats &&
     pokemonByID.sprite;
-
-  const upp = (word) => {
-    return word[0].toUpperCase() + word.substring(1);
-  };
 
   useEffect(() => {
     fetchPokemonByID(id);
@@ -55,7 +51,7 @@ const PokemonPage = () => {
         // General container
         <>
           <div className={styles.types}>
-            <h2 className={styles.name}>{upp(pokemonByID.name)}</h2>
+            <h2 className={styles.name}>{capitalizeFirstChar(pokemonByID.name)}</h2>
             <div>
               {pokemonByID.types.map((type) => (
                 <span
@@ -81,7 +77,7 @@ const PokemonPage = () => {
               {pokemonByID.stats.map((stat) => (
                 <div key={stat.name} className="w-full relative">
                   {/* Left container */}
-                  <div className="w-1/2">{upp(stat.name)}</div>
+                  <div className="w-1/2">{capitalizeFirstChar(stat.name)}</div>
                   {/* Right container */}
                   <div
                     className={styles.rightStat}
