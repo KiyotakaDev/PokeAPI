@@ -27,9 +27,17 @@ const Loader = () => {
 };
 
 const PokemonPage = () => {
-  const { pokemonByID, fetchPokemonByID, capitalizeFirstChar, isLoading } = usePokemonStore();
+  const { pokemonByID, fetchPokemonByID, capitalizeFirstChar, isLoading } =
+    usePokemonStore();
   const { id } = useParams();
-  if (!pokemonByID) return
+  if (
+    !pokemonByID &&
+    !pokemonByID.types &&
+    !pokemonByID.sprite &&
+    !pokemonByID.stats &&
+    !pokemonByID.name
+  )
+    return;
 
   useEffect(() => {
     fetchPokemonByID(id);
@@ -42,7 +50,9 @@ const PokemonPage = () => {
         // General container
         <>
           <div className={styles.types}>
-            <h2 className={styles.name}>{capitalizeFirstChar(pokemonByID.name)}</h2>
+            <h2 className={styles.name}>
+              {capitalizeFirstChar(pokemonByID.name)}
+            </h2>
             <div>
               {pokemonByID.types.map((type) => (
                 <span
