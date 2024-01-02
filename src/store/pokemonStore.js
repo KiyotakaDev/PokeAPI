@@ -107,6 +107,7 @@ const usePokemonStore = create((set, get) => ({
     }
   },
   capitalizeFirstChar: (word) => {
+    if (!word) return
     return word[0].toUpperCase() + word.substring(1);
   },
 }));
