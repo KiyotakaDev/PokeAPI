@@ -8,13 +8,13 @@ const styles = {
   container:
     "absolute bottom-0 xl:left-1/2 h-1/2 w-full xl:h-screen xl:w-1/2 overflow-y-scroll overflow-x-hidden p-4 xl:px-12 xl:py-6 flex flex-col gap-y-4 sm:gap-y-7 lg:gap-y-10 1k:gap-y-9 4k:gap-y-20",
   pokemonCard:
-    "relative bg-pokemon-purple-200 py-4 sm:py-7 lg:py-10 xl:py-8 2k:py-12 4k:py-16 rounded-br-full",
+    "relative bg-pokemon-purple-200 py-4 sm:py-7 lg:py-10 xl:py-8 2k:py-12 4k:py-16 rounded-br-full card cursor-pointer",
   pokeText:
     "text-white text-shadow text-xs s:text-base ls:text-xl sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
   pokemonImage:
     "absolute h-16 w-16 ls:h-20 ls:w-20 sm:h-32 sm:w-32 lg:h-40 lg:w-40 xl:h-28 xl:w-28 1k:h-36 1k:w-36 2k:h-48 2k:w-48 4k:h-72 4k:w-72 -top-3 1k:-top-6 4k:-top-10 -left-3 xl:-left-8 4k:-left-12 object-contain",
   pokemonDetails:
-    "w-3/4 relative left-[22%] lg:left-[18%] flex justify-between pr-5 sm:pr-12 4k:pr-24 gap-x-20",
+    "relative w-[68%] lg:w-3/4 left-[22%] lg:left-[18%] flex justify-between items-center",
 };
 
 const Loader = () => {
@@ -50,7 +50,7 @@ const PokeCard = ({ pokemon }) => {
       ref={cardRef}
       onClick={() => handleClick(cardRef.current)}
       id={pokemon.id}
-      className={`card cursor-pointer ${styles.pokemonCard} hover:scale-[1.02] xl:hover:scale-105 hover:bg-pokemon-purple-50 active:scale-95`}
+      className={` ${styles.pokemonCard} hover:scale-[1.02] xl:hover:scale-105 hover:bg-pokemon-purple-50 active:scale-95`}
     >
       {pokemon.sprite == null ? (
         <>
@@ -70,8 +70,8 @@ const PokeCard = ({ pokemon }) => {
         />
       )}
       <div className={styles.pokemonDetails}>
-        <p>#{pokemon.id}</p>
-        <h3>{capitalizeFirstChar(pokemon.name)}</h3>
+        <p className="text-start">#{pokemon.id}</p>
+        <h3 className="text-end">{capitalizeFirstChar(pokemon.name)}</h3>
       </div>
     </div>
   );
@@ -119,7 +119,7 @@ const PokeList = () => {
           to={`pokemon/${selectedCard.attributes.id.value}`}
         >
           <img
-            className="object-cover w-[75%] h-auto animate-less_bounce"
+            className="object-cover w-1/2 ls:w-3/4 h-auto animate-less_bounce"
             src={selectedCard.firstChild.src}
             alt={selectedCard.firstChild.attributes.alt.value}
           />

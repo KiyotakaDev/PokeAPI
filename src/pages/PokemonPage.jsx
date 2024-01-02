@@ -106,6 +106,10 @@ const PokemonPage = () => {
               </Link>
             </div>
           </div>
+
+          <div className="">
+
+          </div>
         </>
       ) : (
         <Loader />
