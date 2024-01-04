@@ -25,8 +25,14 @@ const Loader = () => {
 };
 
 const PokemonPage = () => {
-  const { pokemonByID, fetchPokemonByID, isLoading, capitalizeFirstChar } =
-    usePokemonStore();
+  const {
+    pokemonByID,
+    fetchPokemonByID,
+    isLoading,
+    capitalizeFirstChar,
+    setSearchTerm,
+    setSelectedCard,
+  } = usePokemonStore();
   const { id } = useParams();
   const check =
     pokemonByID &&
@@ -54,6 +60,10 @@ const PokemonPage = () => {
                   className="h-auto w-full p-2 "
                   src="/house.svg"
                   alt="house-icon"
+                  onClick={() => {
+                    setSearchTerm("");
+                    setSelectedCard(null);
+                  }}
                 />
               </Link>
             </div>
