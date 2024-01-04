@@ -84,6 +84,7 @@ const PokeList = () => {
     isLoading,
     filteredPokemonsArray,
     searchTerm,
+    setSelectedCard,
     selectedCard,
   } = usePokemonStore();
   const containerRef = useRef();
@@ -109,10 +110,34 @@ const PokeList = () => {
     });
 
     return () => observer.disconnect();
-  }, [allPokemons, filteredPokemonsArray]);
+  }, [allPokemons, filteredPokemonsArray, searchTerm]);
+
+  const notFound = {
+    attributes: { id: { value: "132" } },
+    firstChild: {
+      src: "/ditto.png",
+      attributes: { alt: { value: "Ditto 404" } },
+    },
+  };
+
+  useEffect(() => {
+    if (filteredPokemonsArray.length <= 0 && searchTerm !== "") {
+      setSelectedCard(notFound);
+    }
+  }, [filteredPokemonsArray, searchTerm]);
 
   const memonizedLink = useMemo(() => {
-    if (selectedCard) {
+    if (selectedCard === null) {
+      return (
+        <div
+          className={`${styles.largePokeText} absolute h-3/4 flex justify-center items-center animate-less_bounce pointer-events-none text-center`}
+        >
+          <p className="text-base s:text-lg sm:text-2xl xl:text-3xl 1k:text-4xl 2k:text-6xl 4k:text-8xl px-10">
+            Please select one pokemon!
+          </p>
+        </div>
+      );
+    } else {
       return (
         <Link
           className="flex justify-center items-center"
@@ -124,16 +149,6 @@ const PokeList = () => {
             alt={selectedCard.firstChild.attributes.alt.value}
           />
         </Link>
-      );
-    } else {
-      return (
-        <div
-          className={`${styles.largePokeText} absolute h-3/4 flex justify-center items-center animate-less_bounce pointer-events-none text-center`}
-        >
-          <p className="text-base s:text-lg sm:text-2xl xl:text-3xl 1k:text-4xl 2k:text-6xl 4k:text-8xl px-10">
-            Please select one pokemon!
-          </p>
-        </div>
       );
     }
   }, [selectedCard, allPokemons]);
@@ -148,14 +163,25 @@ const PokeList = () => {
               {memonizedLink}
             </div>
           </div>
-          <div ref={containerRef} className={styles.container}>
-            {searchTerm === ""
-              ? allPokemons.map((pokemon) => (
-                  <PokeCard key={pokemon.id} pokemon={pokemon} />
-                ))
-              : filteredPokemonsArray.map((pokemon) => (
-                  <PokeCard key={pokemon.id} pokemon={pokemon} />
-                ))}
+          <div
+            ref={containerRef}
+            className={`${styles.container} ${
+              filteredPokemonsArray.length <= 0 && searchTerm !== ""
+                ? "flex justify-center items-center animate-pulse"
+                : ""
+            }`}
+          >
+            {searchTerm === "" ? (
+              allPokemons.map((pokemon) => (
+                <PokeCard key={pokemon.id} pokemon={pokemon} />
+              ))
+            ) : filteredPokemonsArray.length > 0 ? (
+              filteredPokemonsArray.map((pokemon) => (
+                <PokeCard key={pokemon.id} pokemon={pokemon} />
+              ))
+            ) : (
+              <div>Pokemon not found</div>
+            )}
           </div>
         </div>
       ) : (
