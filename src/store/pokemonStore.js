@@ -1,7 +1,8 @@
 import { create } from "zustand";
 
+const baseURL = "https://pokeapi.co/api/v2/"
+
 const usePokemonStore = create((set, get) => ({
-  baseURL: "https://pokeapi.co/api/v2/",
   pokemonByID: [],
   allPokemons: [],
   filteredPokemonsArray: [],
@@ -12,7 +13,6 @@ const usePokemonStore = create((set, get) => ({
   searchTerm: "",
   setSearchTerm: (term) => set({ searchTerm: term }),
   fetchPokemonByID: async (id) => {
-    const { baseURL } = get();
     try {
       set({ isLoading: true });
       const response = await fetch(`${baseURL}pokemon/${id}`);
@@ -49,7 +49,7 @@ const usePokemonStore = create((set, get) => ({
     }
   },
   fetchAllPokemons: async () => {
-    const { baseURL, dataLoaded } = get();
+    const { dataLoaded } = get();
     if (dataLoaded) return;
 
     try {
