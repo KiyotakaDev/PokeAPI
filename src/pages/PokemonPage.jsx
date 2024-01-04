@@ -32,6 +32,7 @@ const PokemonPage = () => {
     setSelectedCard,
   } = usePokemonStore();
   const { id } = useParams();
+  // All data check
   const check =
     pokemonByID &&
     pokemonByID.name &&
@@ -50,6 +51,7 @@ const PokemonPage = () => {
     <div className={general.page}>
       {!isLoading && check ? (
         <>
+          {/* Head start */}
           <div className={general.head}>
             <div className="w-[15%] ls:w-[12%] sm:w-[10%] xl:w-[5%] ml-3 2k:ml-20 4k:ml-42">
               <Link to="/">
@@ -64,10 +66,12 @@ const PokemonPage = () => {
                 />
               </Link>
             </div>
+            {/* Pokemon name */}
             <div className="w-[80%] flex flex-wrap justify-center items-center">
               <h2 className="text-lg ls:text-xl sm:text-3xl lg:text-4xl 2k:text-6xl 4k:text-7xl">
                 {capitalizeFirstChar(pokemonByID.name)}
               </h2>
+              {/* Pokemon types */}
               <div>
                 {pokemonByID.types.map((type) => (
                   <span
@@ -81,8 +85,11 @@ const PokemonPage = () => {
               </div>
             </div>
           </div>
+          {/* Head end */}
 
+          {/* Remaining section start */}
           <div className={general.imageDisplay}>
+            {/* Image container */}
             <div className="flex justify-center items-center pt-10 xl:w-1/2">
               <img
                 className="object-contain w-[50%] h-auto animate-less_bounce"
@@ -115,6 +122,7 @@ const PokemonPage = () => {
                   </div>
                 </div>
               ))}
+              {/* Other data container */}
               <div className={general.otherData}>
                 <p>Height: {pokemonByID.height}M</p>
                 <span className="border border-dashed border-white w-[90%]" />
@@ -122,6 +130,7 @@ const PokemonPage = () => {
               </div>
             </div>
           </div>
+          {/* Remaining section end */}
         </>
       ) : (
         <Loader />
