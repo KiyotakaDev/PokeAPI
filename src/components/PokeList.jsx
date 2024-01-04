@@ -5,6 +5,7 @@ import NavBar from "./NavBar";
 import { newtonsCradle } from "ldrs";
 import PokeCard from "./PokeCard";
 
+// Page styles
 const styles = {
   container:
     "absolute bottom-0 xl:left-1/2 h-1/2 w-full xl:h-screen xl:w-1/2 overflow-y-scroll overflow-x-hidden p-4 xl:px-12 xl:py-6 flex flex-col gap-y-4 sm:gap-y-7 lg:gap-y-10 1k:gap-y-9 4k:gap-y-20",
@@ -12,6 +13,7 @@ const styles = {
     "text-white text-shadow text-xs s:text-base ls:text-xl sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
 };
 
+// Loader
 const Loader = () => {
   newtonsCradle.register();
 
@@ -31,6 +33,7 @@ const Loader = () => {
   );
 };
 
+// Fallback pokemon data
 const notFound = {
   attributes: { id: { value: "132" } },
   firstChild: {
@@ -39,6 +42,7 @@ const notFound = {
   },
 };
 
+// PokeList component
 const PokeList = () => {
   const {
     allPokemons,
@@ -51,36 +55,45 @@ const PokeList = () => {
   } = usePokemonStore();
   const containerRef = useRef();
 
+  // Fetch
   useEffect(() => {
     fetchAllPokemons();
   }, []);
 
+  // Intersection observer useEffect
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Intersection observer
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          // Toggle for every card
           entry.target.classList.toggle("show", entry.isIntersecting);
         });
       },
       { threshold: 0.5 }
     );
 
+    // ChildNodes mapping
     containerRef.current.childNodes.forEach((child) => {
       observer.observe(child);
     });
 
+    // Clean up
     return () => observer.disconnect();
   }, [allPokemons, filteredPokemonsArray, searchTerm]);
 
+  // Set fallback data when pokemon is not found
   useEffect(() => {
     if (filteredPokemonsArray.length <= 0 && searchTerm !== "") {
       setSelectedCard(notFound);
     }
   }, [filteredPokemonsArray, searchTerm]);
 
+  // Memonized link to avoid re-calcs
   const memonizedLink = useMemo(() => {
+    // Message when pokemon is not selected yet
     if (selectedCard === null) {
       return (
         <div className="absolute h-3/4 flex justify-center items-center animate-less_bounce pointer-events-none text-center">
@@ -90,7 +103,9 @@ const PokeList = () => {
         </div>
       );
     } else {
+      // When selected show the pokemon image
       return (
+        // Link to the pokemon page
         <Link
           className="flex justify-center items-center"
           to={`pokemon/${selectedCard.attributes.id.value}`}
@@ -106,15 +121,21 @@ const PokeList = () => {
   }, [selectedCard, allPokemons]);
 
   return (
+    // Container
     <div className={styles.pokeText}>
+      {/* If OK -> */}
       {!isLoading && allPokemons && filteredPokemonsArray ? (
+        // Screen
         <div className={`relative h-screen w-full flex flex-col xl:flex-row`}>
+          {/* Top section */}
           <div className="absolute h-1/2 w-full xl:h-screen xl:w-1/2 ">
             <NavBar />
             <div className="w-full h-full flex justify-center items-end xl:items-center">
               {memonizedLink}
             </div>
           </div>
+
+          {/* Bottom section */}
           <div
             ref={containerRef}
             className={`${styles.container} ${
@@ -132,6 +153,7 @@ const PokeList = () => {
                 <PokeCard key={pokemon.id} pokemon={pokemon} />
               ))
             ) : (
+              // Message when pokemon is not found
               <div>Pokemon not found</div>
             )}
           </div>
