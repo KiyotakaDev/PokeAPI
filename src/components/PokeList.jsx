@@ -1,20 +1,15 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import usePokemonStore from "../store/pokemonStore";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
 import { newtonsCradle } from "ldrs";
+import PokeCard from "./PokeCard";
 
 const styles = {
   container:
     "absolute bottom-0 xl:left-1/2 h-1/2 w-full xl:h-screen xl:w-1/2 overflow-y-scroll overflow-x-hidden p-4 xl:px-12 xl:py-6 flex flex-col gap-y-4 sm:gap-y-7 lg:gap-y-10 1k:gap-y-9 4k:gap-y-20",
-  pokemonCard:
-    "relative bg-pokemon-purple-200 py-4 sm:py-7 lg:py-10 xl:py-8 2k:py-12 4k:py-16 rounded-br-full card cursor-pointer",
   pokeText:
     "text-white text-shadow text-xs s:text-base ls:text-xl sm:text-2xl lg:text-4xl xl:text-2xl 1k:text-4xl 2k:text-5xl 4k:text-7xl",
-  pokemonImage:
-    "absolute h-16 w-16 ls:h-20 ls:w-20 sm:h-32 sm:w-32 lg:h-40 lg:w-40 xl:h-28 xl:w-28 1k:h-36 1k:w-36 2k:h-48 2k:w-48 4k:h-72 4k:w-72 -top-3 1k:-top-6 4k:-top-10 -left-3 xl:-left-8 4k:-left-12 object-contain",
-  pokemonDetails:
-    "relative w-[68%] lg:w-3/4 left-[22%] lg:left-[18%] flex justify-between items-center",
 };
 
 const Loader = () => {
@@ -36,45 +31,12 @@ const Loader = () => {
   );
 };
 
-const PokeCard = ({ pokemon }) => {
-  const { setSelectedCard, capitalizeFirstChar } = usePokemonStore();
-  const cardRef = useRef(null);
-  if (!cardRef) return;
-
-  const handleClick = (ref) => {
-    setSelectedCard(ref);
-  };
-
-  return (
-    <div
-      ref={cardRef}
-      onClick={() => handleClick(cardRef.current)}
-      id={pokemon.id}
-      className={`${styles.pokemonCard} hover:scale-[1.02] xl:hover:scale-105 hover:bg-pokemon-purple-50 active:scale-95 gap-x-5`}
-    >
-      {pokemon.sprite == null ? (
-        <>
-          <img
-            className={styles.pokemonImage}
-            src="/ditto.png"
-            alt="ditto not found"
-          />
-          <p className="absolute bottom-0">404</p>
-        </>
-      ) : (
-        <img
-          className={styles.pokemonImage}
-          src={pokemon.sprite}
-          alt={pokemon.name}
-          loading="lazy"
-        />
-      )}
-      <div className={styles.pokemonDetails}>
-        <p className="text-start">#{pokemon.id}</p>
-        <h3 className="text-end">{capitalizeFirstChar(pokemon.name)}</h3>
-      </div>
-    </div>
-  );
+const notFound = {
+  attributes: { id: { value: "132" } },
+  firstChild: {
+    src: "/ditto.png",
+    attributes: { alt: { value: "Ditto 404" } },
+  },
 };
 
 const PokeList = () => {
@@ -112,14 +74,6 @@ const PokeList = () => {
     return () => observer.disconnect();
   }, [allPokemons, filteredPokemonsArray, searchTerm]);
 
-  const notFound = {
-    attributes: { id: { value: "132" } },
-    firstChild: {
-      src: "/ditto.png",
-      attributes: { alt: { value: "Ditto 404" } },
-    },
-  };
-
   useEffect(() => {
     if (filteredPokemonsArray.length <= 0 && searchTerm !== "") {
       setSelectedCard(notFound);
@@ -129,9 +83,7 @@ const PokeList = () => {
   const memonizedLink = useMemo(() => {
     if (selectedCard === null) {
       return (
-        <div
-          className={`${styles.largePokeText} absolute h-3/4 flex justify-center items-center animate-less_bounce pointer-events-none text-center`}
-        >
+        <div className="absolute h-3/4 flex justify-center items-center animate-less_bounce pointer-events-none text-center">
           <p className="text-base s:text-lg sm:text-2xl xl:text-3xl 1k:text-4xl 2k:text-6xl 4k:text-8xl px-10">
             Please select one pokemon!
           </p>
